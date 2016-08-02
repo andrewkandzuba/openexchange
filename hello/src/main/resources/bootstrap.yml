@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: hello
+  cloud:
+    config:
+      uri: ${GONFIG_SERVER_HOST:http://localhost}:${CONFIG_SERVER_PORT:8888}
+      fail-fast: true
+      password: ${CONFIG_SERVICE_PASSWORD:changeit}
+      username: user
