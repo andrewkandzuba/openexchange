@@ -1,6 +1,6 @@
 package org.openexchange.controllers;
 
-import org.openexchange.config.HelloConfiguration;
+import org.openexchange.config.CashierConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SettingsController {
     private final Environment environment;
-    private final HelloConfiguration helloConfiguration;
+    private final CashierConfiguration cashierConfiguration;
 
     @Autowired
-    public SettingsController(Environment environment, HelloConfiguration helloConfiguration) {
+    public SettingsController(Environment environment, CashierConfiguration cashierConfiguration) {
         this.environment = environment;
-        this.helloConfiguration = helloConfiguration;
+        this.cashierConfiguration = cashierConfiguration;
     }
 
     @RequestMapping("/")
@@ -25,6 +25,6 @@ public class SettingsController {
 
     @RequestMapping("/language")
     public String language() {
-        return helloConfiguration.getLanguage();
+        return cashierConfiguration.getLanguage();
     }
 }

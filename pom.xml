@@ -35,8 +35,10 @@
 
     <modules>
         <module>config</module>
-        <module>hello</module>
+        <module>cashier</module>
         <module>client-config</module>
+        <module>registry</module>
+        <module>currency</module>
     </modules>
 
     <build>

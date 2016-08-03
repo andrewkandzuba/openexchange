@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RefreshScope
-public class HelloConfiguration {
+public class CashierConfiguration {
     @Value("${configuration.properties.language:EN}")
     private String language;
 
