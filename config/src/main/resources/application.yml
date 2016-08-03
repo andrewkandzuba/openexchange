@@ -8,4 +8,4 @@ spring:
           uri: ${CONFIG_GIT}
 security:
   user:
-    password: ${CONFIG_SERVICE_PASSWORD:changeit}
+    password: ${CONFIG_SERVICE_PASSWORD}

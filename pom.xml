@@ -11,7 +11,7 @@
 
     <groupId>org.openexchange</groupId>
     <artifactId>openexchange</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>openexchange ::: ${project.artifactId}</name>
@@ -30,19 +30,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-stream-dependencies</artifactId>
-                <version>1.0.2.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency -->
         </dependencies>
     </dependencyManagement>
 
     <modules>
         <module>config</module>
         <module>hello</module>
+        <module>client-config</module>
     </modules>
 
     <build>

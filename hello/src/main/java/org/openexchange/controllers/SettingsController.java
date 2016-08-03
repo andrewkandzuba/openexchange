@@ -1,26 +1,21 @@
-package org.openexchange.hello;
+package org.openexchange.controllers;
 
+import org.openexchange.config.HelloConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication
 @RestController
-@RefreshScope
-public class Application {
+public class SettingsController {
     private final Environment environment;
-    @Value("${configuration.properties.language:EN}")
-    private String language;
+    private final HelloConfiguration helloConfiguration;
 
     @Autowired
-    public Application(Environment environment) {
+    public SettingsController(Environment environment, HelloConfiguration helloConfiguration) {
         this.environment = environment;
+        this.helloConfiguration = helloConfiguration;
     }
 
     @RequestMapping("/")
@@ -30,10 +25,6 @@ public class Application {
 
     @RequestMapping("/language")
     public String language() {
-        return language;
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        return helloConfiguration.getLanguage();
     }
 }
