@@ -1,12 +1,9 @@
 spring:
   application:
     name: registry
-  cloud:
-    config:
-      uri: ${CONFIG_SERVICE_HOST}:${CONFIG_SERVICE_PORT:8888}
-      fail-fast: true
-      username: user
-      password: ${CONFIG_SERVICE_PASSWORD}
+
+server:
+  port: ${PORT:8761}
 
 eureka:
   instance:
@@ -16,3 +13,4 @@ eureka:
     fetchRegistry: false
     server:
       waitTimeInMsWhenSyncEmpty: 0
+      enableSelfPreservation: false

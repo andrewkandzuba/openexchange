@@ -10,7 +10,14 @@ public class CashierConfiguration {
     @Value("${configuration.properties.language:EN}")
     private String language;
 
+    @Value("${configuration.properties.currency:USD}")
+    private String currency;
+
     public String getLanguage() {
         return language;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 }

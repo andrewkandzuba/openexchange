@@ -3,7 +3,16 @@ spring:
     name: cashier
   cloud:
     config:
-      uri: ${CONFIG_SERVICE_HOST}:${CONFIG_SERVICE_PORT:8888}
       fail-fast: true
       username: user
-      password: ${CONFIG_SERVICE_PASSWORD}
+      password: ${CONFIG_SERVER_PASSWORD}
+      discovery:
+        enabled: true
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka.credentials.uri:${EUREKA_SERVER_URL}}/eureka/

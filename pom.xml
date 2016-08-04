@@ -11,7 +11,7 @@
 
     <groupId>org.openexchange</groupId>
     <artifactId>openexchange</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>openexchange ::: ${project.artifactId}</name>
@@ -34,10 +34,10 @@
     </dependencyManagement>
 
     <modules>
-        <module>config</module>
-        <module>cashier</module>
-        <module>client-config</module>
         <module>registry</module>
+        <module>configserver</module>
+        <module>configclient</module>
+        <module>cashier</module>
         <module>currency</module>
     </modules>
 
@@ -49,6 +49,18 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
                         <finalName>${project.artifactId}</finalName>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <includes>
+                            <include>**/units/**</include>
+                        </includes>
+                        <excludes>
+                            <exclude>**/integrations/**</exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
             </plugins>

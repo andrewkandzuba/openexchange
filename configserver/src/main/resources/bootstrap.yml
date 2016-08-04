@@ -1,0 +1,30 @@
+server:
+  port: ${PORT:8888}
+spring:
+  application:
+    name: configserver
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${CONFIG_SERVER_GIT}
+
+security:
+  user:
+    password: ${CONFIG_SERVER_PASSWORD}
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+    preferIpAddress: false
+    hostname: ${vcap.application.uris[0]:localhost}
+    nonSecurePort: ${server.port}
+    instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+  client:
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka.credentials.uri:${EUREKA_SERVER_URL}}/eureka/

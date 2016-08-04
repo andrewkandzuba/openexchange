@@ -25,14 +25,14 @@ public class RefreshService {
 
     @PostConstruct
     public void start() {
-        scheduler.schedule(this::refreshContext, refreshRateConfiguration.getRate(), TimeUnit.valueOf(refreshRateConfiguration.getTimeUnit()));
+        scheduler.schedule(this::refreshContext, refreshRateConfiguration.getInterval(), TimeUnit.valueOf(refreshRateConfiguration.getTimeUnit()));
     }
 
     private void refreshContext() {
         logger.info("Force the refresh of the application context");
         try {
             refreshEndpoint.refresh();
-            scheduler.schedule(this::refreshContext, refreshRateConfiguration.getRate(), TimeUnit.valueOf(refreshRateConfiguration.getTimeUnit()));
+            scheduler.schedule(this::refreshContext, refreshRateConfiguration.getInterval(), TimeUnit.valueOf(refreshRateConfiguration.getTimeUnit()));
         } catch (Throwable t) {
             logger.error(t.getMessage(), t);
         }

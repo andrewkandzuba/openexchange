@@ -27,4 +27,9 @@ public class SettingsController {
     public String language() {
         return cashierConfiguration.getLanguage();
     }
+
+    @RequestMapping("/currency")
+    public String currency() {
+        return cashierConfiguration.getCurrency();
+    }
 }

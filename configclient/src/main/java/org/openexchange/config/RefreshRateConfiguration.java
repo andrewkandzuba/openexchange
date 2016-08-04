@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RefreshScope
 public class RefreshRateConfiguration {
-    @Value("${spring.cloud.config.refresh.rate:1}")
-    private long rate;
+    @Value("${spring.cloud.config.refresh.interval:1}")
+    private long interval;
     @Value("${spring.cloud.config.refresh.timeUnit:MINUTES}")
     private String timeUnit;
 
-    public long getRate() {
-        return rate;
+    public long getInterval() {
+        return interval;
     }
 
     public String getTimeUnit() {
