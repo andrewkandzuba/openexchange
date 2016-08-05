@@ -25,3 +25,7 @@ The microservice implements a *cashier* contract.
 Run using *Maven spring-boot plugin*:
 
 `$mvn spring-boot:run -Drun.jvmArguments='-DEUREKA_SERVER_URL=...'`
+
+## Cloudfoundry
+
+`$ cf push -p target/manifest.yml`

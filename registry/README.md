@@ -22,4 +22,8 @@ Run using *Maven spring-boot plugin*:
 
 `$mvn spring-boot:run`
 
+## Cloudfoundry
+
+`$ cf push -p target/manifest.yml`
+
      

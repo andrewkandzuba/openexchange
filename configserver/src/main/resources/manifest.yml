@@ -9,5 +9,5 @@ env:
   JBP_CONFIG_OPEN_JDK_JRE: '[jre: {version: 1.8.0_+}, memory_calculator: {memory_heuristics: {heap: 85, stack: 10}}]'
   CONFIG_SERVER_PASSWORD: changeit
   CONFIG_SERVER_GIT: https://github.com/andrewkandzuba/openexchange-configuration.git
-  EUREKA_SERVER_URL: http://registry-1-0-2.cfapps.io
+  EUREKA_SERVER_URL: http://registry-${parsedVersion.majorVersion}-${parsedVersion.minorVersion}-${parsedVersion.incrementalVersion}.cfapps.io
   SPRING_PROFILES_ACTIVE: cloud

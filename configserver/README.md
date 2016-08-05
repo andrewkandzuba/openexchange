@@ -25,3 +25,7 @@ It also registers itself to the Eureka Service Registry to enable *Discovery Fir
 Run using *Maven spring-boot plugin*:
 
 `$mvn spring-boot:run -Drun.jvmArguments='-Dhttps.proxyHost=... -Dhttps.proxyPort=... -DCONFIG_SERVER_GIT=... -DCONFIG_SERVER_PASSWORD=...'`
+
+## Cloudfoundry
+
+`$ cf push -p target/manifest.yml`
