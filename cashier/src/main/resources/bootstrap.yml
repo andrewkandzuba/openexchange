@@ -15,8 +15,15 @@ eureka:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
     hostname: ${vcap.application.uris[0]:localhost}
-    nonSecurePort: ${LOCAL_INSTANCE_PORT:80}
+    nonSecurePort: ${server.port}
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
   client:
     serviceUrl:
       defaultZone: ${EUREKA_SERVER_URL}/eureka/
+
+---
+spring:
+  profiles: cloud
+eureka:
+  instance:
+    nonSecurePort: 80

@@ -10,3 +10,4 @@ env:
   CONFIG_SERVER_PASSWORD: changeit
   CONFIG_SERVER_GIT: https://github.com/andrewkandzuba/openexchange-configuration.git
   EUREKA_SERVER_URL: http://registry-1-0-2.cfapps.io
+  SPRING_PROFILES_ACTIVE: cloud

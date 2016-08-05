@@ -8,3 +8,4 @@ applications:
 env:
   JBP_CONFIG_OPEN_JDK_JRE: '[jre: {version: 1.8.0_+}, memory_calculator: {memory_heuristics: {heap: 85, stack: 10}}]'
   EUREKA_SERVER_URL: http://registry-1-0-2.cfapps.io
+  SPRING_PROFILES_ACTIVE: cloud
