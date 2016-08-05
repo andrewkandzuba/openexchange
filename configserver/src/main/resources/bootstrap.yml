@@ -17,14 +17,12 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
-    preferIpAddress: false
     hostname: ${vcap.application.uris[0]:localhost}
-    nonSecurePort: ${server.port}
+    nonSecurePort: ${LOCAL_INSTANCE_PORT:80}
     instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+    metadataMap:
+      user: user
+      password: ${CONFIG_SERVER_PASSWORD}
   client:
-    healthcheck:
-      enabled: true
-    lease:
-      duration: 5
     serviceUrl:
-      defaultZone: ${vcap.services.eureka.credentials.uri:${EUREKA_SERVER_URL}}/eureka/
+      defaultZone: ${EUREKA_SERVER_URL}/eureka/

@@ -1,0 +1,12 @@
+---
+applications:
+- name:  ${project.groupId}:${project.artifactId}:${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}
+  host:  ${project.artifactId}-${parsedVersion.majorVersion}-${parsedVersion.minorVersion}-${parsedVersion.incrementalVersion}
+  memory: 512M
+  disk_quota: 1G
+  instances: 1
+env:
+  JBP_CONFIG_OPEN_JDK_JRE: '[jre: {version: 1.8.0_+}, memory_calculator: {memory_heuristics: {heap: 85, stack: 10}}]'
+  CONFIG_SERVER_PASSWORD: changeit
+  CONFIG_SERVER_GIT: https://github.com/andrewkandzuba/openexchange-configuration.git
+  EUREKA_SERVER_URL: http://registry-1-0-2.cfapps.io

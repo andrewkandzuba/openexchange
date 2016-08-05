@@ -12,7 +12,7 @@ The implementation bases on *Spring Cloud Netflix Eureka* service registry.
 
 | Name | Default value | Description | 
 | --- | --- | --- |
-| server.port | 8761 | Unsecured local bind port |
+| server.port | 8761 | A local bind port |
 
 # Bootstrap
 

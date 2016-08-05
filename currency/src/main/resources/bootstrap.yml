@@ -1,9 +1,23 @@
+server:
+  port: ${PORT:8082}
+
 spring:
   application:
     name: currency
   cloud:
     config:
-      uri: ${CONFIG_SERVICE_HOST}:${CONFIG_SERVICE_PORT:8888}
       fail-fast: true
-      username: user
-      password: ${CONFIG_SERVICE_PASSWORD}
+      discovery:
+        enabled: true
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+    preferIpAddress: false
+    hostname: ${vcap.application.uris[0]:localhost}
+    nonSecurePort: ${server.port}
+    instanceId: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka.credentials.uri:${EUREKA_SERVER_URL}}/eureka/
