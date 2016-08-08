@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cashier
+    name: currency
   cloud:
     config:
       fail-fast: true
@@ -27,3 +27,22 @@ spring:
 eureka:
   instance:
     nonSecurePort: 80
+
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+  jpa:
+    show_sql: false
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    platform: h2
+
+eureka:
+  client:
+    enabled: false

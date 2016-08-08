@@ -1,11 +1,10 @@
-package org.openexchange.units;
+package org.openexchange;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openexchange.RegistryApplication;
 import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,7 +16,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RegistryApplication.class, webEnvironment = RANDOM_PORT)
-public class TestRegistryApplication {
+public class RegistryApplicationTest {
 
     @LocalServerPort
     private int port;

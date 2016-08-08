@@ -11,7 +11,7 @@
 
     <groupId>org.openexchange</groupId>
     <artifactId>openexchange</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>openexchange ::: ${project.artifactId}</name>
@@ -30,6 +30,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.pojomatic</groupId>
+                <artifactId>pojomatic</artifactId>
+                <version>2.0.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -45,6 +50,17 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <fork>true</fork>
+                        <meminitial>1024m</meminitial>
+                        <maxmem>4096m</maxmem>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
@@ -54,14 +70,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <includes>
-                            <include>**/units/**</include>
-                        </includes>
-                        <excludes>
-                            <exclude>**/integrations/**</exclude>
-                        </excludes>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -74,17 +82,6 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <configuration>
-                        <delimiters>
-                            <delimiter>@</delimiter>
-                            <delimiter>${*}</delimiter>
-                        </delimiters>
-                        <useDefaultDelimiters>true</useDefaultDelimiters>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
