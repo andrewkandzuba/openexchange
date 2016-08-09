@@ -5,11 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.openexchange.domain.Currency;
 import org.openexchange.repository.CurrencyRepository;
 import org.openexchange.service.CurrencyServiceImpl;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -28,12 +30,11 @@ public class CurrencyServiceTest {
 
     @Test
     public void testFindAll() throws Exception {
-        when(currencyRepository.findAll())
-                .then(invocationOnMock ->
-                        Arrays.asList(
+        when(currencyRepository.findAll(Mockito.any(org.springframework.data.domain.Sort.class)))
+                .thenReturn(Arrays.asList(
                                 new Currency("USD", "United States Dollar"),
                                 new Currency("EUR", "European euro")));
-        Iterable<Currency> currencies = currencyService.findAll();
+        List<Currency> currencies = currencyService.findAll();
         final boolean[] found = {false};
         currencies.forEach(currency -> {
             if (currency.getCode().equalsIgnoreCase("USD")) {

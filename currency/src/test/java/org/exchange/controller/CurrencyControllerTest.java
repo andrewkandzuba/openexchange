@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.openexchange.CurrencyApplication;
 import org.openexchange.controller.CurrencyController;
+import org.openexchange.controller.ErrorHandler;
 import org.openexchange.domain.Currency;
 import org.openexchange.service.CurrencyService;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CurrencyControllerTest {
     @InjectMocks
     private CurrencyController currencyController;
+    @InjectMocks
+    private ErrorHandler errorHandler;
     @Mock
     private CurrencyService accountService;
     private MockMvc mockMvc;
@@ -38,7 +41,10 @@ public class CurrencyControllerTest {
     @Before
     public void setup() {
         initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(currencyController).build();
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(currencyController)
+                .setControllerAdvice(errorHandler)
+                .build();
     }
 
     @Test
@@ -63,8 +69,7 @@ public class CurrencyControllerTest {
                 .andExpect(jsonPath("$.description").value("European Euro"));
     }
 
-    //@Test
-    // @ToDo: fix issue
+    @Test
     public void shoudFailedWhenCertainCurrencyInNotFound() throws Exception {
         mockMvc.perform(get("/currencies/EUR"))
                 .andExpect(status().isNotFound());

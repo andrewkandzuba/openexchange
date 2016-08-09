@@ -27,7 +27,7 @@ public class ErrorHandler {
 
     @ExceptionHandler(HttpClientErrorException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void processHttpClientErrorException(MethodArgumentNotValidException e) {
+    public void processHttpClientErrorException(HttpClientErrorException e) {
         log.info("Returning HTTP 404 Not Found", e);
     }
 }
