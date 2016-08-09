@@ -3,6 +3,7 @@ package org.openexchange.service;
 import org.openexchange.domain.Currency;
 import org.openexchange.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +18,15 @@ public class CurrencyServiceImpl implements CurrencyService {
     private CurrencyRepository currencyRepository;
 
     @Override
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public List<Currency> findAll() {
-        return currencyRepository.findAll();
+        return currencyRepository.findAll(new Sort(Sort.Direction.ASC, "code"));
     }
 
     @Override
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public Currency findByCode(String code) {
+        Assert.notNull(code, "currency's code cannot take null value");
         return currencyRepository.findOne(code);
     }
 

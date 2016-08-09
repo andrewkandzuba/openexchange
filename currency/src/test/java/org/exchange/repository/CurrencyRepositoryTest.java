@@ -8,6 +8,7 @@ import org.openexchange.domain.Currency;
 import org.openexchange.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -42,5 +43,21 @@ public class CurrencyRepositoryTest {
         currencyRepository.save(existing);
         existing = currencyRepository.findOne("EUR");
         Assert.assertEquals("European Union Euro", existing.getDescription());
+    }
+
+    @Test
+    public void testDeleteExistingCurrency() throws Exception {
+        Currency currency = new Currency("EUR", "European Euro");
+        currencyRepository.save(currency);
+        Currency existing = currencyRepository.findOne("EUR");
+        Assert.assertEquals("European Euro", existing.getDescription());
+        currencyRepository.delete(existing);
+        existing = currencyRepository.findOne("EUR");
+        Assert.assertNull(existing);
+    }
+
+    @Test(expected = InvalidDataAccessApiUsageException.class)
+    public void testFailedWithNull() throws Exception {
+        currencyRepository.findOne((String) null);
     }
 }
