@@ -11,12 +11,13 @@ It also registers itself to the Eureka Service Registry to enable *Discovery Fir
 
 | Name | Default value | Description | 
 | --- | --- | --- |
-| CONFIG_SERVER_GIT | | GIT repository url |
-| CONFIG_SERVER_PASSWORD | | A password of global Configuration Service | 
-| EUREKA_SERVER_URL | | URL of Eureka Service Registry |
-| server.port | 8888 |  A local bind port |
-| https.proxyHost | | A HTTP proxy host if enabled |
-| https.proxyPort | | A HTTP proxy port if enabled |
+| spring.cloud.config.server.git.uri | | GIT repository url |
+| security.user.password | | Password of a global Configuration Service | 
+| ureka.instance.metadataMap.user | | User of a global Configuration Service. To be registered into Service Registry. | 
+| ureka.instance.metadataMap.password | | Password of a global Configuration Service. To be registered into Service Registry. | 
+| eureka.instance.nonSecurePort | 8888 |  Local binding port |
+| https.proxyHost | | HTTP proxy host if enabled |
+| https.proxyPort | | HTTP proxy port if enabled |
 
 # Bootstrap
 
@@ -24,7 +25,7 @@ It also registers itself to the Eureka Service Registry to enable *Discovery Fir
 
 Run using *Maven spring-boot plugin*:
 
-`$mvn spring-boot:run -Drun.jvmArguments='-Dhttps.proxyHost=... -Dhttps.proxyPort=... -DCONFIG_SERVER_GIT=... -DCONFIG_SERVER_PASSWORD=...'`
+`$mvn spring-boot:run -Drun.jvmArguments='...'`
 
 ## Cloudfoundry
 

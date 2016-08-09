@@ -14,9 +14,9 @@ The microservice implements a *cashier* contract.
 
 | Name | Default value | Description | 
 | --- | --- | --- |
-| EUREKA_SERVER_URL | | URL of Eureka Service Registry |
-| LOCAL_INSTANCE_PORT | 80 | The local instance's port to be reported to the service registry  |
-| server.port | 8081 |  A local bind port |
+| eureka.instance.nonSecurePort | 8081 |  Local binding port |
+
+
 
 # Bootstrap
 

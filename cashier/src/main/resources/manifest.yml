@@ -5,7 +5,7 @@ applications:
   memory: 512M
   disk_quota: 1G
   instances: 1
+services:
+  - eureka-service
 env:
   JBP_CONFIG_OPEN_JDK_JRE: '[jre: {version: 1.8.0_+}, memory_calculator: {memory_heuristics: {heap: 85, stack: 10}}]'
-  EUREKA_SERVER_URL: http://registry-${parsedVersion.majorVersion}-${parsedVersion.minorVersion}-${parsedVersion.incrementalVersion}.cfapps.io
-  SPRING_PROFILES_ACTIVE: cloud

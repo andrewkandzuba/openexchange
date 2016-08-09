@@ -18,8 +18,11 @@ The microservice facilities currencies details and exchange rates statistics.
 
 | Name | Default value | Description | 
 | --- | --- | --- |
-| EUREKA_SERVER_URL | | URL of Eureka Service Registry |
-| server.port | 8081 |  A local bind port |
+| eureka.instance.nonSecurePort | 8081 |  Local binding port |
+| spring.datasource.platform | | Datasource platform |
+| spring.datasource.url | | Datasource url |
+| spring.datasource.username | | Datasource user |
+| spring.datasource.password | | Datasource password |
 
 # Bootstrap
 
@@ -27,7 +30,7 @@ The microservice facilities currencies details and exchange rates statistics.
 
 Run using *Maven spring-boot plugin*:
 
-`$mvn spring-boot:run -Drun.jvmArguments='-DEUREKA_SERVER_URL=...'`
+`$mvn spring-boot:run -Drun.jvmArguments='...'`
 
 ## Cloudfoundry
 

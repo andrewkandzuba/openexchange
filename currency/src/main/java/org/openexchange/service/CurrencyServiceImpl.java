@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 @Service
 @Repository
 public class CurrencyServiceImpl implements CurrencyService {
@@ -16,7 +18,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     @Transactional(readOnly=true)
-    public Iterable<Currency> findAll() {
+    public List<Currency> findAll() {
         return currencyRepository.findAll();
     }
 

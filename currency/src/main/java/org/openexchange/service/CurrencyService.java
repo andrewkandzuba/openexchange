@@ -2,8 +2,10 @@ package org.openexchange.service;
 
 import org.openexchange.domain.Currency;
 
+import java.util.List;
+
 public interface CurrencyService {
-    Iterable<Currency> findAll();
+    List<Currency> findAll();
     Currency findByCode(String code);
     Currency create(String code, String description);
     void saveChanges(Currency currency);
