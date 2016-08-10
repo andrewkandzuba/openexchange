@@ -9,5 +9,5 @@ public interface CurrencyService {
     Currency findByCode(String code);
     Currency create(String code, String description);
     void saveChanges(Currency currency);
-    void delete(Currency currency);
+    void delete(String code);
 }

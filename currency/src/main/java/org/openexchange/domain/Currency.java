@@ -3,13 +3,15 @@ package org.openexchange.domain;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.pojomatic.annotations.AutoProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @AutoProperty
-public class Currency {
+public class Currency implements Serializable {
+    private static final long serialVersionUID = -4875874173742367410L;
     @Id
+    @Column(length = 3, unique = true, nullable = false)
     private String code;
     @NotEmpty
     private String description;

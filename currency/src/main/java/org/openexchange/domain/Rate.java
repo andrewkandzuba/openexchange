@@ -1,34 +1,103 @@
 package org.openexchange.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.pojomatic.annotations.AutoProperty;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class Rate {
-    private final String from;
-    private final String to;
-    private final BigDecimal rate;
-    private final Date at;
+@Entity
+@AutoProperty
+public class Rate implements Serializable {
+    private static final long serialVersionUID = 5160208533569040830L;
 
-    public Rate(String from, String to, BigDecimal rate, Date at) {
-        this.from = from;
-        this.to = to;
-        this.rate = rate;
-        this.at = at;
+    @Id
+    private RatePK ratePK;
+    @Column(precision = 10, scale = 6)
+    private BigDecimal quote;
+
+    public Rate() {
     }
 
-    public String getFrom() {
-        return from;
+    public Rate(Currency source, Currency target, BigDecimal quote) {
+        this.ratePK = new RatePK(source, target);
+        this.quote = quote;
     }
 
-    public String getTo() {
-        return to;
+    public Currency getSource(){
+        return ratePK.getSource();
     }
 
-    public BigDecimal getRate() {
-        return rate;
+    void setSource(Currency source){
+        ratePK.setSource(source);
     }
 
-    public Date getAt() {
-        return at;
+    public Currency getTarget(){
+        return ratePK.getTarget();
+    }
+
+    void setTarget(Currency target){
+        ratePK.setTarget(target);
+    }
+
+    public BigDecimal getQuote() {
+        return quote;
+    }
+
+    public void setQuote(BigDecimal quote) {
+        this.quote = quote;
+    }
+
+    @Embeddable
+    public static class RatePK implements Serializable {
+        private static final long serialVersionUID = 6663463117714621191L;
+
+        @OneToOne
+        @OnDelete(action = OnDeleteAction.CASCADE)
+        @JoinColumn(referencedColumnName = "code")
+        private Currency source;
+        @OneToOne
+        @OnDelete(action = OnDeleteAction.CASCADE)
+        @JoinColumn(referencedColumnName = "code")
+        private Currency target;
+
+        public RatePK() {
+        }
+
+        public RatePK(Currency source, Currency target) {
+            this.source = source;
+            this.target = target;
+        }
+
+        public boolean equals(Object object) {
+            if (object instanceof RatePK) {
+                RatePK pk = (RatePK) object;
+                return source.equals(pk.source) && target.equals(pk.target);
+            } else {
+                return false;
+            }
+        }
+
+        public int hashCode() {
+            return source.hashCode() + target.hashCode();
+        }
+
+        Currency getSource() {
+            return source;
+        }
+
+        void setSource(Currency source) {
+            this.source = source;
+        }
+
+        Currency getTarget() {
+            return target;
+        }
+
+        void setTarget(Currency target) {
+            this.target = target;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package org.exchange.service;
+package org.openexchange.service;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.openexchange.domain.Currency;
 import org.openexchange.repository.CurrencyRepository;
-import org.openexchange.service.CurrencyServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;

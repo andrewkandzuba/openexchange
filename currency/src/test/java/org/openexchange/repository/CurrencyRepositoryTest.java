@@ -1,25 +1,29 @@
-package org.exchange.repository;
+package org.openexchange.repository;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openexchange.CurrencyApplication;
 import org.openexchange.domain.Currency;
-import org.openexchange.repository.CurrencyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import javax.inject.Inject;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CurrencyApplication.class, webEnvironment = RANDOM_PORT)
-@ActiveProfiles("test")
+@DataJpaTest
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TestPropertySource(locations = "classpath:test.properties")
 public class CurrencyRepositoryTest {
-    @Autowired
+    @Inject
     private CurrencyRepository currencyRepository;
 
     @Test
@@ -59,5 +63,16 @@ public class CurrencyRepositoryTest {
     @Test(expected = InvalidDataAccessApiUsageException.class)
     public void testFailedWithNull() throws Exception {
         currencyRepository.findOne((String) null);
+    }
+
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void testDeleteNoneExisting() throws Exception {
+        currencyRepository.delete("EEE");
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void testPRLength() throws Exception {
+        currencyRepository.save(new Currency("EUR", "EUR"));
+        currencyRepository.save(new Currency("EURO", "EUR"));
     }
 }

@@ -54,8 +54,8 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     @Transactional
-    public void delete(Currency currency) {
-        Assert.notNull(currencyRepository.findOne(currency.getCode()), "can't find currency of with code " + currency.getCode());
-        currencyRepository.delete(currency);
+    public void delete(String code) {
+        Assert.notNull(code, "currency's code cannot take null value");
+        currencyRepository.delete(code);
     }
 }
