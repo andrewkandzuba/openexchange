@@ -7,7 +7,6 @@ import org.openexchange.repository.RateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -28,20 +27,5 @@ public class RateServiceImpl implements RateService {
             throw new ObjectNotFoundException(id, "Not rate available for the currencies");
         }
         return rate;
-    }
-
-    @Override
-    public Rate create(Currency source, Currency target, BigDecimal quote) {
-        return null;
-    }
-
-    @Override
-    public void saveChanges(Rate rate) {
-
-    }
-
-    @Override
-    public void delete(Currency source, Currency target) {
-
     }
 }

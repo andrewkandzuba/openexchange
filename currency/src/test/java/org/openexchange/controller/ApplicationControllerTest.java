@@ -78,21 +78,21 @@ public class ApplicationControllerTest {
 
     @Test
     public void testShouldFailedWhenBothOfCurrenciesNotFound() throws Exception {
-        mockMvc.perform(get("/rates/EUR/USD"))
+        mockMvc.perform(get("/quotes/EUR/USD"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void testShouldFailedWhenFirstCurrencyNotFound() throws Exception {
         when(currencyService.findByCode("USD")).thenReturn(new Currency("USD", "United States Dollar"));
-        mockMvc.perform(get("/rates/EUR/USD"))
+        mockMvc.perform(get("/quotes/EUR/USD"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void testShouldFailedWhenLastCurrencyNotFound() throws Exception {
         when(currencyService.findByCode("EUR")).thenReturn(new Currency("EUR", "European Euro"));
-        mockMvc.perform(get("/rates/EUR/USD"))
+        mockMvc.perform(get("/quotes/EUR/USD"))
                 .andExpect(status().isNotFound());
     }
 
@@ -100,7 +100,7 @@ public class ApplicationControllerTest {
     public void testShouldFailedWhenRateNotFound() throws Exception {
         when(currencyService.findByCode("EUR")).thenReturn(new Currency("EUR", "European Euro"));
         when(currencyService.findByCode("USD")).thenReturn(new Currency("USD", "United States Dollar"));
-        mockMvc.perform(get("/rates/EUR/USD"))
+        mockMvc.perform(get("/quotes/EUR/USD"))
                 .andExpect(status().isNotFound());
     }
 
@@ -111,10 +111,8 @@ public class ApplicationControllerTest {
         when(currencyService.findByCode("EUR")).thenReturn(eur);
         when(currencyService.findByCode("USD")).thenReturn(usd);
         when(rateService.findRate(eur, usd)).thenReturn(new Rate(eur, usd, BigDecimal.valueOf(0.85)));
-        mockMvc.perform(get("/rates/EUR/USD"))
+        mockMvc.perform(get("/quotes/EUR/USD"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.source.code").value("EUR"))
-                .andExpect(jsonPath("$.target.code").value("USD"))
-                .andExpect(jsonPath("$.quote").value(0.850000));
+                .andExpect(jsonPath("$").value(0.850000));
     }
 }

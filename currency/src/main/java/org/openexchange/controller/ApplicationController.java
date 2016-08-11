@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -36,8 +37,8 @@ public class ApplicationController {
         return found;
     }
 
-    @RequestMapping(path = "rates/{sourceCode}/{targetCode}", method = RequestMethod.GET)
-    public Rate findRate(@PathVariable String sourceCode, @PathVariable String targetCode){
+    @RequestMapping(path = "quotes/{sourceCode}/{targetCode}", method = RequestMethod.GET)
+    public BigDecimal findQuote(@PathVariable String sourceCode, @PathVariable String targetCode){
         Currency source = currencyService.findByCode(sourceCode);
         if(source == null) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
@@ -50,6 +51,6 @@ public class ApplicationController {
         if(rate == null) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
-        return rate;
+        return rate.getQuote();
     }
 }

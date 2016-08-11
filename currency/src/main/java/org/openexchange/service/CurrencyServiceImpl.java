@@ -4,7 +4,6 @@ import org.openexchange.domain.Currency;
 import org.openexchange.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -12,7 +11,6 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 @Service
-@Repository
 public class CurrencyServiceImpl implements CurrencyService {
     @Autowired
     private CurrencyRepository currencyRepository;
