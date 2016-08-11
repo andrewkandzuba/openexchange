@@ -13,33 +13,33 @@ import java.math.BigDecimal;
 public class Rate implements Serializable {
     private static final long serialVersionUID = 5160208533569040830L;
 
-    @Id
-    private RatePK ratePK;
-    @Column(precision = 10, scale = 6)
+    @EmbeddedId
+    private RatePK id;
+    @Column(precision = 10, scale = 6, nullable = false)
     private BigDecimal quote;
 
     public Rate() {
     }
 
     public Rate(Currency source, Currency target, BigDecimal quote) {
-        this.ratePK = new RatePK(source, target);
+        this.id = new RatePK(source, target);
         this.quote = quote;
     }
 
     public Currency getSource(){
-        return ratePK.getSource();
+        return id.getSource();
     }
 
     void setSource(Currency source){
-        ratePK.setSource(source);
+        id.setSource(source);
     }
 
     public Currency getTarget(){
-        return ratePK.getTarget();
+        return id.getTarget();
     }
 
     void setTarget(Currency target){
-        ratePK.setTarget(target);
+        id.setTarget(target);
     }
 
     public BigDecimal getQuote() {

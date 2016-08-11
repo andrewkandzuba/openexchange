@@ -91,5 +91,48 @@ public class RateRepositoryTest {
         rates = rateRepository.findAll();
         Assert.assertEquals(0, rates.size());
     }
+
+    @Test
+    public void testShouldFindByIdSource() throws Exception {
+        Currency eur = new Currency("EUR", "European Euro");
+        Currency uah = new Currency("UAH", "Ukrainian Hryvna");
+        Currency usd = new Currency("USD", "United States Dollar");
+
+        currencyRepository.save(eur);
+        currencyRepository.save(usd);
+        currencyRepository.save(uah);
+
+        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(30.25)));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.15)));
+        rateRepository.save(new Rate(usd, uah, BigDecimal.valueOf(26.55)));
+
+        List<Rate> rates = rateRepository.findByIdSource(eur);
+        Assert.assertEquals(2, rates.size());
+
+        Assert.assertEquals(eur.getCode(), rates.get(0).getSource().getCode());
+        Assert.assertEquals(eur.getCode(), rates.get(1).getSource().getCode());
+    }
+
+    @Test
+    public void testShouldFindByIdSourceAndIdTarget() throws Exception {
+        Currency eur = new Currency("EUR", "European Euro");
+        Currency uah = new Currency("UAH", "Ukrainian Hryvna");
+        Currency usd = new Currency("USD", "United States Dollar");
+
+        currencyRepository.save(eur);
+        currencyRepository.save(usd);
+        currencyRepository.save(uah);
+
+        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(30.25)));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.15)));
+        rateRepository.save(new Rate(usd, uah, BigDecimal.valueOf(26.55)));
+
+        Rate rateEurToUsd = rateRepository.findOne(new Rate.RatePK(eur, uah));
+        Assert.assertEquals(eur.getCode(), rateEurToUsd.getSource().getCode());
+        Assert.assertEquals(uah.getCode(), rateEurToUsd.getTarget().getCode());
+
+        Rate rateUsdToEur = rateRepository.findOne(new Rate.RatePK(usd, eur));
+        Assert.assertNull(rateUsdToEur);
+    }
 }
 

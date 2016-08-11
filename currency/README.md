@@ -2,15 +2,15 @@
 
 **Currency Service**
 
-The microservice facilities currencies details and exchange rates statistics. 
+The microservice facilities currencies details and exchange quotes statistics. 
 
 # API
 
 | Method | Path | Description | User authenticated | Available from UI |
 | --- | :--- | --- | :---: | :---: |
 | GET | /currencies/ | Lists all registered currencies | | × |
-| GET | /rates/current/{from}/{to} | Returns instant currencies exchange rate |  | × |
-| GET | /rates/current/{date}/{from}/{to} | Returns currencies exchange rate at given data |  | × |
+| GET | /currencies/{code} | Get details of a certain currency | | × |
+| GET | /rates/{source}/{target} | Get an exchange's quote of a source to target currencies  |  | × |
 
 # Configuration
 

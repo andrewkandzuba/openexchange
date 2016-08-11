@@ -1,5 +1,6 @@
 package org.openexchange.controller;
 
+import org.hibernate.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,21 +14,15 @@ import org.springframework.web.client.HttpClientErrorException;
 public class ErrorHandler {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class, MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void processValidationError(IllegalArgumentException e) {
+    public void processMethodArgumentValidationError(Exception e) {
         log.info("Returning HTTP 400 Bad Request", e);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void processMethodArgumentValidationError(MethodArgumentNotValidException e) {
-        log.info("Returning HTTP 400 Bad Request", e);
-    }
-
-    @ExceptionHandler(HttpClientErrorException.class)
+    @ExceptionHandler({HttpClientErrorException.class, ObjectNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void processHttpClientErrorException(HttpClientErrorException e) {
+    public void processHttpClientErrorException(Exception e) {
         log.info("Returning HTTP 404 Not Found", e);
     }
 }

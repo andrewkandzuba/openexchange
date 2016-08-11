@@ -5,7 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.openexchange.domain.Currency;
+import org.openexchange.domain.Rate;
 import org.openexchange.service.CurrencyService;
+import org.openexchange.service.RateService;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
@@ -13,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -23,29 +26,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(CurrencyController.class)
+@WebMvcTest(ApplicationController.class)
 @TestPropertySource(locations = "classpath:test.properties")
-public class CurrencyControllerTest {
+public class ApplicationControllerTest {
     @InjectMocks
-    private CurrencyController currencyController;
+    private ApplicationController applicationController;
     @InjectMocks
     private ErrorHandler errorHandler;
     @MockBean
-    private CurrencyService accountService;
+    private CurrencyService currencyService;
+    @MockBean
+    private RateService rateService;
     private MockMvc mockMvc;
 
     @Before
     public void setup() {
         initMocks(this);
         this.mockMvc = MockMvcBuilders
-                .standaloneSetup(currencyController)
+                .standaloneSetup(applicationController)
                 .setControllerAdvice(errorHandler)
                 .build();
     }
 
     @Test
     public void testShouldFindAllCurrencies() throws Exception {
-        when(accountService.findAll()).thenReturn(Arrays.asList(
+        when(currencyService.findAll()).thenReturn(Arrays.asList(
                 new Currency("EUR", "European Euro"),
                 new Currency("USD", "United States Dollar")
         ));
@@ -58,7 +63,7 @@ public class CurrencyControllerTest {
 
     @Test
     public void testShouldFindCertainCurrency() throws Exception {
-        when(accountService.findByCode("EUR")).thenReturn(new Currency("EUR", "European Euro"));
+        when(currencyService.findByCode("EUR")).thenReturn(new Currency("EUR", "European Euro"));
         mockMvc.perform(get("/currencies/EUR"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value("EUR"))
@@ -69,5 +74,47 @@ public class CurrencyControllerTest {
     public void testShouldFailedWhenCertainCurrencyInNotFound() throws Exception {
         mockMvc.perform(get("/currencies/EUR"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testShouldFailedWhenBothOfCurrenciesNotFound() throws Exception {
+        mockMvc.perform(get("/rates/EUR/USD"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testShouldFailedWhenFirstCurrencyNotFound() throws Exception {
+        when(currencyService.findByCode("USD")).thenReturn(new Currency("USD", "United States Dollar"));
+        mockMvc.perform(get("/rates/EUR/USD"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testShouldFailedWhenLastCurrencyNotFound() throws Exception {
+        when(currencyService.findByCode("EUR")).thenReturn(new Currency("EUR", "European Euro"));
+        mockMvc.perform(get("/rates/EUR/USD"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testShouldFailedWhenRateNotFound() throws Exception {
+        when(currencyService.findByCode("EUR")).thenReturn(new Currency("EUR", "European Euro"));
+        when(currencyService.findByCode("USD")).thenReturn(new Currency("USD", "United States Dollar"));
+        mockMvc.perform(get("/rates/EUR/USD"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testShouldFindRate() throws Exception {
+        Currency eur = new Currency("EUR", "European Euro");
+        Currency usd = new Currency("USD", "United States Dollar");
+        when(currencyService.findByCode("EUR")).thenReturn(eur);
+        when(currencyService.findByCode("USD")).thenReturn(usd);
+        when(rateService.findRate(eur, usd)).thenReturn(new Rate(eur, usd, BigDecimal.valueOf(0.85)));
+        mockMvc.perform(get("/rates/EUR/USD"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.source.code").value("EUR"))
+                .andExpect(jsonPath("$.target.code").value("USD"))
+                .andExpect(jsonPath("$.quote").value(0.850000));
     }
 }
