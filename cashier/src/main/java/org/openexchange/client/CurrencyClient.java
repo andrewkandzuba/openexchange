@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.math.BigDecimal;
 
-@FeignClient("currency")
+@FeignClient(name = "currency")
 public interface CurrencyClient {
-    @RequestMapping(path = "rates/{sourceCode}/{targetCode}", method = RequestMethod.GET)
-    BigDecimal findRate(@PathVariable String sourceCode, @PathVariable String targetCode);
+    @RequestMapping(path = "quotes/{sourceCode}/{targetCode}", method = RequestMethod.GET)
+    BigDecimal findQuote(@PathVariable("sourceCode") String sourceCode, @PathVariable("targetCode") String targetCode);
 }

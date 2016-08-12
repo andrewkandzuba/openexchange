@@ -6,10 +6,7 @@ import org.openexchange.service.CurrencyService;
 import org.openexchange.service.RateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
@@ -19,7 +16,6 @@ import java.util.List;
 public class ApplicationController {
     @Autowired
     private CurrencyService currencyService;
-
     @Autowired
     private RateService rateService;
 

@@ -1,12 +1,11 @@
 package org.openexchange.controllers;
 
 import org.openexchange.config.CashierConfiguration;
+import org.openexchange.service.CashierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -14,11 +13,13 @@ import java.math.BigDecimal;
 public class ApplicationController {
     private final Environment environment;
     private final CashierConfiguration cashierConfiguration;
+    private final CashierService cashierService;
 
     @Autowired
-    public ApplicationController(Environment environment, CashierConfiguration cashierConfiguration) {
+    public ApplicationController(Environment environment, CashierConfiguration cashierConfiguration, CashierService cashierService) {
         this.environment = environment;
         this.cashierConfiguration = cashierConfiguration;
+        this.cashierService = cashierService;
     }
 
     @RequestMapping("/")
@@ -37,7 +38,8 @@ public class ApplicationController {
     }
 
     @RequestMapping("/exchange/{source}/{target}/{amount}")
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public BigDecimal exchange(@PathVariable String source, @PathVariable String target, @PathVariable BigDecimal amount){
-        return new BigDecimal(0);
+        return cashierService.exchange(source, target, amount);
     }
 }
