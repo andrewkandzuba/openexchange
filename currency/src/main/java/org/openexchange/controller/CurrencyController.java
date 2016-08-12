@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-public class ApplicationController {
+public class CurrencyController {
     @Autowired
     private CurrencyService currencyService;
     @Autowired

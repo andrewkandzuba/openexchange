@@ -8,16 +8,12 @@ import java.math.BigDecimal;
 
 @Service
 public class CashierServiceImpl implements CashierService {
-    private final CurrencyClient currencyClient;
-
     @Autowired
-    public CashierServiceImpl(CurrencyClient currencyClient) {
-        this.currencyClient = currencyClient;
-    }
+    private CurrencyClient currencyClient;
 
     @Override
-    public BigDecimal exchange(String source, String target, BigDecimal amount) {
+    public BigDecimal exchange(String source, String target, double amount) {
         BigDecimal quote = currencyClient.findQuote(source, target);
-        return amount.multiply(quote);
+        return BigDecimal.valueOf(amount).multiply(quote);
     }
 }

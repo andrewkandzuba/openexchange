@@ -26,13 +26,13 @@ public class CashierServiceTest {
     @Test
     public void testExchange() throws Exception {
         when(currencyClient.findQuote("EUR", "UAH")).thenReturn(BigDecimal.valueOf(30.0));
-        BigDecimal amount = currencyService.exchange("EUR", "UAH", BigDecimal.valueOf(10.0));
+        BigDecimal amount = currencyService.exchange("EUR", "UAH", 10.0);
         Assert.assertTrue(amount.compareTo(BigDecimal.valueOf(300.0)) == 0);
     }
 
     //@Test
     public void testFailedExchange() throws Exception {
-        BigDecimal amount = currencyService.exchange("EUR", "UAH", BigDecimal.valueOf(10.0));
+        BigDecimal amount = currencyService.exchange("EUR", "UAH", 10.0);
         Assert.assertTrue(amount.compareTo(BigDecimal.valueOf(300.0)) == 0);
     }
 }

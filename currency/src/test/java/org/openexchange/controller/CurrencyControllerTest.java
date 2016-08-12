@@ -26,11 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(ApplicationController.class)
+@WebMvcTest(CurrencyController.class)
 @TestPropertySource(locations = "classpath:test.properties")
-public class ApplicationControllerTest {
+public class CurrencyControllerTest {
     @InjectMocks
-    private ApplicationController applicationController;
+    private CurrencyController currencyController;
     @InjectMocks
     private ErrorHandler errorHandler;
     @MockBean
@@ -43,7 +43,7 @@ public class ApplicationControllerTest {
     public void setup() {
         initMocks(this);
         this.mockMvc = MockMvcBuilders
-                .standaloneSetup(applicationController)
+                .standaloneSetup(currencyController)
                 .setControllerAdvice(errorHandler)
                 .build();
     }
