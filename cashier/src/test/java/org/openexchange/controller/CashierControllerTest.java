@@ -1,5 +1,7 @@
 package org.openexchange.controller;
 
+import feign.FeignException;
+import feign.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +17,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -55,9 +61,15 @@ public class CashierControllerTest {
         mockMvc.perform(get("/exchange/USD/UAH/10.0")).andExpect(status().isOk()).andExpect(jsonPath("$").value(260.000000));
     }
 
-    @Test
+    @Test(expected = NestedServletException.class)
     public void testShouldFailed() throws Exception {
-        when(cashierService.exchange("USD", "UAH", 10.0)).thenThrow(new NullPointerException());
-        mockMvc.perform(get("/exchange/USD/UAH/10.0")).andExpect(status().isInternalServerError());
+        Map<String, Collection<String>> headers = Collections.emptyMap();
+        when(cashierService.exchange("USD", "UAH", 10.0))
+                .thenThrow(FeignException.errorStatus(
+                        "exchange",
+                        Response.create(
+                                400, "A rate does not exist for the combination of the source and the target currencies",
+                                headers, new byte[]{})));
+        mockMvc.perform(get("/exchange/USD/UAH/10.0"));
     }
 }

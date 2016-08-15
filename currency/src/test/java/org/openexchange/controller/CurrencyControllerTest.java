@@ -73,27 +73,27 @@ public class CurrencyControllerTest {
     @Test
     public void testShouldFailedWhenCertainCurrencyInNotFound() throws Exception {
         mockMvc.perform(get("/currencies/EUR"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void testShouldFailedWhenBothOfCurrenciesNotFound() throws Exception {
         mockMvc.perform(get("/quotes/EUR/USD"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void testShouldFailedWhenFirstCurrencyNotFound() throws Exception {
         when(currencyService.findByCode("USD")).thenReturn(new Currency("USD", "United States Dollar"));
         mockMvc.perform(get("/quotes/EUR/USD"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void testShouldFailedWhenLastCurrencyNotFound() throws Exception {
         when(currencyService.findByCode("EUR")).thenReturn(new Currency("EUR", "European Euro"));
         mockMvc.perform(get("/quotes/EUR/USD"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class CurrencyControllerTest {
         when(currencyService.findByCode("EUR")).thenReturn(new Currency("EUR", "European Euro"));
         when(currencyService.findByCode("USD")).thenReturn(new Currency("USD", "United States Dollar"));
         mockMvc.perform(get("/quotes/EUR/USD"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
