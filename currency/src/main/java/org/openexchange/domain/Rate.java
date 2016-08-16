@@ -2,14 +2,12 @@ package org.openexchange.domain;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.pojomatic.annotations.AutoProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@AutoProperty
 public class Rate implements Serializable {
     private static final long serialVersionUID = 5160208533569040830L;
 

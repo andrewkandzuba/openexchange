@@ -18,7 +18,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <java.version>1.9</java.version>
+        <jdk.launcher.addmods>-Djdk.launcher.addmods=java.xml.bind,java.annotations.common</jdk.launcher.addmods>
     </properties>
 
     <dependencyManagement>
@@ -29,16 +30,6 @@
                 <version>Brixton.SR4</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.pojomatic</groupId>
-                <artifactId>pojomatic</artifactId>
-                <version>2.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -64,6 +55,11 @@
                         <fork>true</fork>
                         <meminitial>1024m</meminitial>
                         <maxmem>4096m</maxmem>
+                        <compilerArgs>
+                            <arg>-verbose</arg>
+                            <arg>-addmods</arg>
+                            <arg>java.xml.bind,java.annotations.common</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -71,11 +67,23 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
                         <finalName>${project.artifactId}</finalName>
+                        <jvmArguments>${jdk.launcher.addmods}</jvmArguments>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <argLine>${jdk.launcher.addmods}</argLine>
+                        <systemProperties>
+                            <jdk.launcher.addmods>java.xml.bind,java.annotations.common</jdk.launcher.addmods>
+                        </systemProperties>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -129,7 +137,6 @@
                         <sourceDirectory>${basedir}/src/main/resources/protocol</sourceDirectory>
                         <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
                         <targetPackage>org.openexchange.protocol</targetPackage>
-                        <useCommonsLang3>true</useCommonsLang3>
                     </configuration>
                 </plugin>
             </plugins>
