@@ -67,7 +67,6 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
                         <finalName>${project.artifactId}</finalName>
-                        <jvmArguments>${jdk.launcher.addmods}</jvmArguments>
                     </configuration>
                 </plugin>
                 <plugin>

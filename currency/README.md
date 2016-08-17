@@ -23,6 +23,7 @@ The microservice facilities currencies details and exchange quotes statistics.
 | spring.datasource.url | | Datasource url |
 | spring.datasource.username | | Datasource user |
 | spring.datasource.password | | Datasource password |
+| jdk.launcher.addmods | | Include into JVM arguments if run on JDK9: java.xml.bind,java.annotations.common |
 
 # Bootstrap
 

@@ -15,7 +15,7 @@ The microservice implements a *cashier* contract.
 | Name | Default value | Description | 
 | --- | --- | --- |
 | eureka.instance.nonSecurePort | 8081 |  Local binding port |
-
+| jdk.launcher.addmods | | Include into JVM arguments if run on JDK9: java.xml.bind,java.annotations.common |
 
 
 # Bootstrap
