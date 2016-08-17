@@ -18,8 +18,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.9</java.version>
-        <jdk.launcher.addmods>-Djdk.launcher.addmods=java.xml.bind,java.annotations.common</jdk.launcher.addmods>
     </properties>
 
     <dependencyManagement>
@@ -50,16 +48,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                         <fork>true</fork>
                         <meminitial>1024m</meminitial>
                         <maxmem>4096m</maxmem>
-                        <compilerArgs>
-                            <arg>-verbose</arg>
-                            <arg>-addmods</arg>
-                            <arg>java.xml.bind,java.annotations.common</arg>
-                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -78,10 +71,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
-                        <argLine>${jdk.launcher.addmods}</argLine>
-                        <systemProperties>
-                            <jdk.launcher.addmods>java.xml.bind,java.annotations.common</jdk.launcher.addmods>
-                        </systemProperties>
+                        <argLine>-Djdk.launcher.addmods=java.xml.bind,java.annotations.common</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -122,4 +112,31 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>jdk9</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-compiler-plugin</artifactId>
+                            <configuration>
+                                <source>1.9</source>
+                                <target>1.9</target>
+                                <fork>true</fork>
+                                <meminitial>1024m</meminitial>
+                                <maxmem>4096m</maxmem>
+                                <compilerArgs>
+                                    <arg>-addmods</arg>
+                                    <arg>java.xml.bind,java.annotations.common</arg>
+                                </compilerArgs>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
 </project>
