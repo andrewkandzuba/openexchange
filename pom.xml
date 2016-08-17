@@ -120,25 +120,6 @@
                         <useDefaultDelimiters>true</useDefaultDelimiters>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.jsonschema2pojo</groupId>
-                    <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-                    <version>0.4.24</version>
-                    <executions>
-                        <execution>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <includeJsr303Annotations>true</includeJsr303Annotations>
-                        <sourceDirectory>${basedir}/src/main/resources/protocol</sourceDirectory>
-                        <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
-                        <targetPackage>org.openexchange.protocol</targetPackage>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
     </build>

@@ -63,13 +63,6 @@
                 </includes>
                 <targetPath>${project.build.directory}</targetPath>
             </resource>
-            <resource>
-                <filtering>true</filtering>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>**/*.json</exclude>
-                </excludes>
-            </resource>
         </resources>
         <testResources>
             <testResource>
@@ -96,10 +89,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jsonschema2pojo</groupId>
-                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
