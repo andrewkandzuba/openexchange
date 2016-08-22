@@ -1,6 +1,5 @@
 package org.openexchange.batch;
 
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +8,9 @@ import org.mockito.Mockito;
 import org.openexchange.integration.Currencies;
 import org.openexchange.integration.CurrencyLayerService;
 import org.openexchange.integration.Quotes;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,14 +30,13 @@ public class CurrencyLayerBatchTest {
     private ItemReader<Quote> reader;
     @MockBean
     private CurrencyLayerService currencyLayerService;
+    @Autowired
+    private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-    }
 
-    @Test
-    public void testReader() throws Exception {
         Currencies currencies = new Currencies();
         currencies.setCurrencies(Map.of("USD", "United States Dollar", "EUR", "European Euro"));
         when(currencyLayerService.all()).thenReturn(currencies);
@@ -45,10 +45,18 @@ public class CurrencyLayerBatchTest {
         quotes.setSuccess(true);
         quotes.setSource("USD");
         quotes.setQuotes(Map.of("USDUSD", 1.00, "USDEUR", 0.90));
-
         when(currencyLayerService.live(Mockito.anyListOf(String.class))).thenReturn(quotes);
+    }
+
+    @Test
+    public void testReader() throws Exception {
         Assert.assertNotNull(reader.read());
         Assert.assertNotNull(reader.read());
         Assert.assertNull(reader.read());
+    }
+
+    @Test
+    public void testFlow() throws Exception {
+        Assert.assertEquals(BatchStatus.COMPLETED, jobLauncherTestUtils.launchStep("quotes_step").getStatus());
     }
 }

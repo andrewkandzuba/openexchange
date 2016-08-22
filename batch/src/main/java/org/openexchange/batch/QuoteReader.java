@@ -5,6 +5,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,12 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class QuoteReader implements ItemReader<Quote> {
-    private final CurrencyLayerService currencyLayerService;
+    @Autowired
+    private CurrencyLayerService currencyLayerService;
     private final ThreadLocal<Iterator<Quote>> iterator = new ThreadLocal<>();
-
-    public QuoteReader(CurrencyLayerService currencyLayerService) {
-        this.currencyLayerService = currencyLayerService;
-    }
 
     @Override
     public Quote read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
