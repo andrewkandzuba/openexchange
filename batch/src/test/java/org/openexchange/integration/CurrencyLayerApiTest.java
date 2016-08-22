@@ -24,9 +24,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
-public class CurrencyLayerTest {
+public class CurrencyLayerApiTest {
     @InjectMocks
     private CurrencyLayerServiceImpl currencyService;
     @MockBean

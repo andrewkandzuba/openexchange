@@ -36,13 +36,13 @@ public class CurrencyLayerServiceImpl implements CurrencyLayerService {
     }
 
     @Override
-    public Quotes live(List<String> currenciesCodes) {
+    public Quotes live(List<String> currencyCodes) {
         logger.info("Retrieves value from an external service");
         ResponseEntity<Quotes> resp = restTemplate.getForEntity(
                 endpoint + "/api/live?access_key={access_key}&currencies={currenciesCodes}&format={format}",
                 Quotes.class,
                 accessKey,
-                StringUtils.arrayToCommaDelimitedString(currenciesCodes.toArray()), 1);
+                StringUtils.arrayToCommaDelimitedString(currencyCodes.toArray()), 1);
         logger.info("The response status is " + resp.getStatusCode());
         if (!resp.getStatusCode().equals(HttpStatus.OK)) {
             throw new IllegalStateException("Unable to retrieve the list of quotes! Response details: " + resp.toString());
