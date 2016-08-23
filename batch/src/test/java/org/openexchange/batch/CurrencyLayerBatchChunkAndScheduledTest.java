@@ -18,6 +18,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -82,5 +83,39 @@ public class CurrencyLayerBatchChunkAndScheduledTest {
         Step step = stepBuilderFactory.get("step2").tasklet(quoteTasklet).build();
         Job job = jobBuilderFactory.get("job2").flow(step).end().build();
         Assert.assertEquals(BatchStatus.COMPLETED, jobLauncherTestUtils.getJobLauncher().run(job, new JobParameters()).getStatus());
+    }
+
+    @Test
+    public void testScheduleTask() throws Exception {
+        Currencies currencies = new Currencies();
+        currencies.setCurrencies(Map.of(
+                "USD", "United States Dollar",
+                "EUR", "European Euro",
+                "UAH", "Ukrainian Hryvnya",
+                "RUR", "Russian Rubles"));
+        when(currencyLayerService.all()).thenReturn(currencies);
+
+        Quotes quotes = new Quotes();
+        quotes.setSuccess(true);
+        quotes.setSource("USD");
+        quotes.setQuotes(Map.of(
+                "USDUSD", 1.00,
+                "USDEUR", 0.90,
+                "USDUAH", 0.3,
+                "USDRUR", 0.15,
+                "USDUAD", 0.004,
+                "USDCAD", 1.04,
+                "USDGBP", 1.75));
+        when(currencyLayerService.live(Mockito.anyListOf(String.class))).thenReturn(quotes);
+        repeat();
+    }
+
+    @Scheduled(fixedRate = 5000)
+    private void repeat(){
+        try {
+            jobLauncherTestUtils.launchJob();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
