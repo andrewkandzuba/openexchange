@@ -57,6 +57,6 @@ public class CurrencyLayerBatchTest {
 
     @Test
     public void testFlow() throws Exception {
-        Assert.assertEquals(BatchStatus.COMPLETED, jobLauncherTestUtils.launchStep("quotes_step").getStatus());
+        Assert.assertEquals(BatchStatus.COMPLETED, jobLauncherTestUtils.launchStep("step1").getStatus());
     }
 }
