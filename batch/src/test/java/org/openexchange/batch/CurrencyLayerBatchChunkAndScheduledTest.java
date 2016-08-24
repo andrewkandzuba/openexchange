@@ -18,11 +18,13 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -41,6 +43,9 @@ public class CurrencyLayerBatchChunkAndScheduledTest {
     private StepBuilderFactory stepBuilderFactory;
     @Autowired
     private QuoteTasklet quoteTasklet;
+    @Autowired
+    private ScheduledExecutorService scheduledExecutorService;
+    private CountDownLatch counter = new CountDownLatch(10);
 
     @Before
     public void setUp() throws Exception {
@@ -107,13 +112,15 @@ public class CurrencyLayerBatchChunkAndScheduledTest {
                 "USDCAD", 1.04,
                 "USDGBP", 1.75));
         when(currencyLayerService.live(Mockito.anyListOf(String.class))).thenReturn(quotes);
-        repeat();
+        scheduledExecutorService.schedule(this::repeatBatch, 1, TimeUnit.SECONDS);
+        counter.await();
     }
 
-    @Scheduled(fixedRate = 5000)
-    private void repeat(){
+    private void repeatBatch(){
         try {
             jobLauncherTestUtils.launchJob();
+            counter.countDown();
+            scheduledExecutorService.schedule(this::repeatBatch, 1, TimeUnit.SECONDS);
         } catch (Exception e) {
             e.printStackTrace();
         }

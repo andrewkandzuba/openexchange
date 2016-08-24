@@ -18,7 +18,7 @@ public class SchedulerExecutorServiceBean {
 
     @PostConstruct
     public void start() {
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1);
     }
 
     @PreDestroy
