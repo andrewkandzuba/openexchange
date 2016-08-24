@@ -25,22 +25,22 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>
-            <!-- exclusions>
+            <exclusions>
                 <exclusion>
                     <groupId>org.codehaus.jettison</groupId>
                     <artifactId>jettison</artifactId>
                 </exclusion>
-            </exclusions -->
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-batch</artifactId>
-            <!-- exclusions>
+            <exclusions>
                 <exclusion>
                     <groupId>org.codehaus.jettison</groupId>
                     <artifactId>jettison</artifactId>
                 </exclusion>
-            </exclusions -->
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,11 +50,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!-- dependency>
+        <dependency>
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>
-            <version>1.1</version>
-        </dependency -->
+            <version>1.2</version>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

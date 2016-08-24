@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.StringReader;
+import java.util.Map;
 
 public class XTreamTest {
     @Test
@@ -14,5 +15,6 @@ public class XTreamTest {
         XStream xtream = new XStream(new JettisonMappedXmlDriver());
         Object o = xtream.fromXML(new StringReader(xml));
         Assert.assertNotNull(o);
+        Assert.assertTrue(o instanceof Map);
     }
 }
