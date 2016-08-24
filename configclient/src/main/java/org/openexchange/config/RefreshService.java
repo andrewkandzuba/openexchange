@@ -29,6 +29,10 @@ public class RefreshService {
     }
 
     private void refreshContext() {
+        if(!refreshRateConfiguration.isEnabled()) {
+            logger.info("Configuration refresh is disabled");
+            return;
+        }
         logger.info("Force the refresh of the application context");
         try {
             refreshEndpoint.refresh();

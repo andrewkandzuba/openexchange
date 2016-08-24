@@ -11,6 +11,8 @@ public class RefreshRateConfiguration {
     private long interval;
     @Value("${spring.cloud.config.refresh.timeUnit:MINUTES}")
     private String timeUnit;
+    @Value("${spring.cloud.config.refresh.enabled:true}")
+    private boolean enabled;
 
     public long getInterval() {
         return interval;
@@ -18,5 +20,9 @@ public class RefreshRateConfiguration {
 
     public String getTimeUnit() {
         return timeUnit;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

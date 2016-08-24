@@ -32,7 +32,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
-public class CurrencyLayerBatchChunkAndScheduledTest {
+public class CurrencyLayerBatchFlowsTest {
     @MockBean
     private CurrencyLayerService currencyLayerService;
     @Autowired
