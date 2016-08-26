@@ -39,6 +39,7 @@
         <module>cashier</module>
         <module>currency</module>
         <module>batch</module>
+        <module>jms</module>
     </modules>
 
     <build>

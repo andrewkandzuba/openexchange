@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.openexchage.domain.Quote;
 import org.openexchange.integration.Currencies;
 import org.openexchange.integration.CurrencyLayerService;
 import org.openexchange.integration.Quotes;
@@ -17,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Mockito.when;
@@ -37,21 +37,11 @@ public class CurrencyLayerBatchStructuralTest {
         initMocks(this);
 
         Currencies currencies = new Currencies();
-        //currencies.setCurrencies(Map.of("USD", "United States Dollar", "EUR", "European Euro"));
-        Map<String, String> map = new HashMap<>();
-        map.put("USD", "United States Dollar");
-        map.put("EUR", "European Euro");
-        currencies.setCurrencies(map);
+        currencies.setCurrencies(Map.of("USD", "United States Dollar", "EUR", "European Euro"));
         when(currencyLayerService.all()).thenReturn(currencies);
 
         Quotes quotes = new Quotes();
-        quotes.setSuccess(true);
-        quotes.setSource("USD");
-        //quotes.setQuotes(Map.of("USDUSD", 1.00, "USDEUR", 0.90));
-        Map<String, Double> map1 = new HashMap<>();
-        map1.put("USDUSD", 1.00);
-        map1.put("USDEUR", 0.90);
-        quotes.setQuotes(map1);
+        quotes.setQuotes(Map.of("USDUSD", 1.00, "USDEUR", 0.90));
         when(currencyLayerService.live(Mockito.anyListOf(String.class))).thenReturn(quotes);
 
         Assert.assertTrue(reader instanceof ItemStream);

@@ -1,4 +1,4 @@
-package org.openexchange.batch;
+package org.openexchage.domain;
 
 public class Quote {
     private final String source;

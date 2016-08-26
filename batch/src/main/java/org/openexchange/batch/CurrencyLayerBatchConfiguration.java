@@ -1,5 +1,7 @@
 package org.openexchange.batch;
 
+import org.openexchage.domain.Quote;
+import org.openexchage.jms.QueueProducer;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -49,12 +51,12 @@ public class CurrencyLayerBatchConfiguration {
     }
 
     @Bean
-    public ItemWriter writer() {
-        return new QuoteWriter();
+    public ItemWriter writer(QueueProducer queueProducer) {
+        return new QuoteWriter(queueProducer);
     }
 
     @Bean
-    public ExecutionContextSerializer executionContextSerializer(){
+    public ExecutionContextSerializer executionContextSerializer() {
         return new DefaultExecutionContextSerializer();
     }
 
