@@ -1,6 +1,6 @@
 package org.openexchange.batch;
 
-import org.openexchage.domain.Quote;
+import org.openexchange.domain.Quote;
 import org.openexchange.integration.CurrencyLayerService;
 import org.openexchange.integration.ServiceException;
 import org.slf4j.Logger;

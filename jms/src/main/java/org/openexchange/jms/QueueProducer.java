@@ -1,6 +1,6 @@
-package org.openexchage.jms;
+package org.openexchange.jms;
 
-import org.openexchage.domain.Quote;
+import org.openexchange.domain.Quote;
 import org.springframework.jms.JmsException;
 
 public interface QueueProducer {

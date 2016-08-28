@@ -1,4 +1,4 @@
-package org.openexchage.jms;
+package org.openexchange.jms;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.context.annotation.Bean;

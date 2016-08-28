@@ -1,4 +1,4 @@
-package org.openexchage.domain;
+package org.openexchange.domain;
 
 public class Quote {
     private final String source;

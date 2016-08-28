@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.openexchage.domain.Quote;
+import org.openexchange.domain.Quote;
 import org.openexchange.integration.Currencies;
 import org.openexchange.integration.CurrencyLayerService;
 import org.openexchange.integration.Quotes;
