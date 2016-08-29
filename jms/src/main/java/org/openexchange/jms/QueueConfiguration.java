@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.config.SimpleJmsListenerContainerFactory;
-import org.springframework.jms.core.JmsMessagingTemplate;
+import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
@@ -25,7 +25,7 @@ public class QueueConfiguration {
     }
 
     @Bean
-    public QueueProducer queueProducer(JmsMessagingTemplate jmsMessagingTemplate, Queue queue){
-        return new QueueProducerImpl(jmsMessagingTemplate, queue);
+    public QueueProducer queueProducer(JmsTemplate jmsTemplate, Queue queue){
+        return new QueueProducerImpl(jmsTemplate, queue);
     }
 }
