@@ -1,5 +1,7 @@
 package org.openexchange.integration;
 
+import org.openexchange.protocol.Currencies;
+import org.openexchange.protocol.Quotes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
