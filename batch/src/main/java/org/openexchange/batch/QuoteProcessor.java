@@ -1,7 +1,7 @@
 package org.openexchange.batch;
 
 
-import org.openexchange.domain.Quote;
+import org.openexchange.protocol.Quote;
 import org.springframework.batch.item.ItemProcessor;
 
 public class QuoteProcessor implements ItemProcessor<Quote, Quote> {

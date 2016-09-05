@@ -1,7 +1,7 @@
 package org.openexchange.batch;
 
-import org.openexchange.domain.Quote;
 import org.openexchange.jms.QueueProducer;
+import org.openexchange.protocol.Quote;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;

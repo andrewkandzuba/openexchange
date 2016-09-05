@@ -1,7 +1,7 @@
 package org.openexchange.batch;
 
-import org.openexchange.domain.Quote;
 import org.openexchange.jms.QueueProducer;
+import org.openexchange.protocol.Quote;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,8 @@
 package org.openexchange.batch;
 
-import org.openexchange.domain.Quote;
 import org.openexchange.integration.CurrencyLayerService;
 import org.openexchange.integration.ServiceException;
+import org.openexchange.protocol.Quote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.*;
@@ -42,7 +42,7 @@ public class QuoteReader implements ItemReader<Quote>, ItemStream {
                         .live(currencyCodes)
                         .getQuotes()
                         .entrySet()
-                        .forEach(entry -> quotes.add(new Quote(entry.getKey().substring(0, 3), entry.getKey().substring(3, 6), entry.getValue())));
+                        .forEach(entry -> quotes.add(build(entry.getKey().substring(0, 3), entry.getKey().substring(3, 6), entry.getValue())));
             } catch (ServiceException e) {
                 logger.error(e.getMessage(), e);
             }
@@ -57,5 +57,13 @@ public class QuoteReader implements ItemReader<Quote>, ItemStream {
     @Override
     public void close() throws ItemStreamException {
         quotes.clear();
+    }
+
+    private static Quote build(String source, String target, Double rate){
+        Quote quote = new Quote();
+        quote.setSource(source);
+        quote.setTarget(target);
+        quote.setQuote(rate);
+        return quote;
     }
 }
