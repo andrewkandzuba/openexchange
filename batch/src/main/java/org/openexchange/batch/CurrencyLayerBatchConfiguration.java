@@ -62,7 +62,7 @@ public class CurrencyLayerBatchConfiguration {
 
     @Bean
     public Job job1(JobBuilderFactory jobs, @Qualifier("step1") Step step1) {
-        return jobs.get("job2")
+        return jobs.get("job1")
                 .incrementer(new RunIdIncrementer())
                 .flow(step1)
                 .end()
@@ -79,6 +79,7 @@ public class CurrencyLayerBatchConfiguration {
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
+                .faultTolerant()
                 .allowStartIfComplete(true)
                 .build();
     }

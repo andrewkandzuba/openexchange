@@ -51,7 +51,7 @@ public class QuoteReader implements ItemReader<Quote>, ItemStream {
 
     @Override
     public void update(ExecutionContext executionContext) throws ItemStreamException {
-        executionContext.putLong(CURRENT_INDEX, currentIndex);
+        executionContext.putInt(CURRENT_INDEX, currentIndex);
     }
 
     @Override
