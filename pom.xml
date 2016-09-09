@@ -142,6 +142,7 @@
                         <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
                         <targetPackage>org.openexchange.protocol</targetPackage>
                         <useCommonsLang3>true</useCommonsLang3>
+                        <serializable>true</serializable>
                     </configuration>
                 </plugin>
             </plugins>

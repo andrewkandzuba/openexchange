@@ -1,6 +1,5 @@
 package org.openexchange.batch;
 
-import org.openexchange.jms.QueueProducer;
 import org.openexchange.protocol.Quote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +17,13 @@ import org.springframework.batch.core.repository.dao.DefaultExecutionContextSeri
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.jms.JmsItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.core.JmsTemplate;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -51,8 +52,10 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public ItemWriter writer(QueueProducer queueProducer) {
-        return new QuoteWriter(queueProducer);
+    public ItemWriter writer(@Qualifier("jmsTemplateQuotes") JmsTemplate jmsTemplate) {
+        JmsItemWriter<Quote> writer = new JmsItemWriter<>();
+        writer.setJmsTemplate(jmsTemplate);
+        return writer;
     }
 
     @Bean
