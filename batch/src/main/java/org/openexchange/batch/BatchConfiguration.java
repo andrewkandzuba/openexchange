@@ -2,43 +2,43 @@ package org.openexchange.batch;
 
 import org.openexchange.jms.QueueProducer;
 import org.openexchange.protocol.Quote;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.listener.JobExecutionListenerSupport;
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
 import org.springframework.batch.core.repository.dao.DefaultExecutionContextSerializer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 @Configuration
-@RefreshScope
-public class CurrencyLayerBatchConfiguration {
-    @Value("${spring.batch.job.refresh.interval:1}")
+@EnableBatchProcessing
+public class BatchConfiguration {
+    private final static Logger logger = LoggerFactory.getLogger(BatchConfiguration.class);
+
+    @Value("${spring.batch.job.restart.interval:1}")
     private long interval;
-    @Value("${spring.batch.job.refresh.timeUnit:MINUTES}")
+    @Value("${spring.batch.job.restart.timeUnit:MINUTES}")
     private String timeUnit;
-    @Value("${spring.batch.job.refresh.enabled:true}")
-    private boolean enabled;
-
-    public long getInterval() {
-        return interval;
-    }
-
-    public String getTimeUnit() {
-        return timeUnit;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
+    @Autowired
+    private ScheduledExecutorService executorService;
+    private volatile Job job;
 
     @Bean
     public ItemReader reader() {
@@ -62,11 +62,26 @@ public class CurrencyLayerBatchConfiguration {
 
     @Bean
     public Job job1(JobBuilderFactory jobs, @Qualifier("step1") Step step1) {
-        return jobs.get("job1")
+        job = jobs.get("job1")
                 .incrementer(new RunIdIncrementer())
-                .flow(step1)
-                .end()
-                .build();
+                .start(step1)
+                .listener(new JobExecutionListenerSupport() {
+                    @Override
+                    public void afterJob(JobExecution jobExecution) {
+                        if (jobExecution.getExitStatus().compareTo(ExitStatus.COMPLETED) == 0) {
+                            executorService.schedule(() -> {
+                                try {
+                                    job.execute(jobExecution);
+                                } catch (Exception e) {
+                                    logger.error(e.getMessage(), e);
+                                }
+                            }, interval, TimeUnit.valueOf(timeUnit));
+                        } else {
+                            logger.error(String.format("Job's execution has existed with status = %s. Unable to schedule next run", jobExecution.getExitStatus()));
+                        }
+                    }
+                }).build();
+        return job;
     }
 
     @Bean
