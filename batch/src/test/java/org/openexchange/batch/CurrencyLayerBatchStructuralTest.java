@@ -13,8 +13,9 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -24,12 +25,14 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = CurrencyLayerBatchStructuralTest.class)
+@SpringBootApplication
+@ComponentScan(basePackages = {"org.openexchange.batch", "org.openexchange.integration","org.openexchange.config"})
 @TestPropertySource(locations = "classpath:test.properties")
 public class CurrencyLayerBatchStructuralTest {
     @Autowired
     private ItemReader<Quote> reader;
-    @MockBean
+    @Autowired
     private CurrencyLayerService currencyLayerService;
 
     @Before

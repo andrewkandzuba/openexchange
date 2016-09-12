@@ -17,8 +17,9 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -34,12 +35,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.openexchange.batch.BatchConfiguration.STEP1;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = CurrencyLayerBatchFlowsTest.class)
+@SpringBootApplication
+@ComponentScan(basePackages = {"org.openexchange.batch", "org.openexchange.integration","org.openexchange.config"})
 @TestPropertySource(locations = "classpath:test.properties")
 public class CurrencyLayerBatchFlowsTest {
-    @MockBean
+    @Autowired
     private ItemWriter<Quotes> itemWriter;
-    @MockBean
+    @Autowired
     private CurrencyLayerService currencyLayerService;
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
