@@ -11,6 +11,8 @@ import javax.jms.ConnectionFactory;
 @Configuration
 @EnableJms
 public class JmsFactoryConfigurationTest {
+    public final static String TEST_QUOTES_QUEUE = "test.quotes.queue";
+
     @Bean
     public ConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("vm://embedded-broker?create=false");
