@@ -41,6 +41,7 @@ public class CurrencyLayerBatchStructuralTest {
         when(currencyLayerService.all()).thenReturn(currencies);
 
         Quotes quotes = new Quotes();
+        quotes.setTimestamp(System.nanoTime());
         quotes.setQuotes(Map.of("USDUSD", 1.00, "USDEUR", 0.90));
         when(currencyLayerService.live(Mockito.anyListOf(String.class))).thenReturn(quotes);
 

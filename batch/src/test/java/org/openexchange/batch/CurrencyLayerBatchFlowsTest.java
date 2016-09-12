@@ -14,6 +14,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,13 +27,18 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.openexchange.batch.BatchConfiguration.STEP1;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
 public class CurrencyLayerBatchFlowsTest {
+    @MockBean
+    private ItemWriter<Quotes> itemWriter;
     @MockBean
     private CurrencyLayerService currencyLayerService;
     @Autowired
@@ -50,10 +56,11 @@ public class CurrencyLayerBatchFlowsTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
+        doNothing().when(itemWriter).write(anyListOf(Quotes.class));
     }
 
     @Test
-    public void testChuckSize() throws Exception {
+    public void testChunkSize() throws Exception {
         Currencies currencies = new Currencies();
         currencies.setCurrencies(Map.of(
                 "USD", "United States Dollar",
@@ -64,6 +71,7 @@ public class CurrencyLayerBatchFlowsTest {
 
         Quotes quotes = new Quotes();
         quotes.setSuccess(true);
+        quotes.setTimestamp(System.nanoTime());
         quotes.setSource("USD");
         quotes.setQuotes(Map.of(
                 "USDUSD", 1.00,
@@ -74,13 +82,13 @@ public class CurrencyLayerBatchFlowsTest {
                 "USDCAD", 1.04,
                 "USDGBP", 1.75));
         when(currencyLayerService.live(Mockito.anyListOf(String.class))).thenReturn(quotes);
-        Assert.assertEquals(BatchStatus.COMPLETED, jobLauncherTestUtils.launchStep("step1").getStatus());
+        Assert.assertEquals(BatchStatus.COMPLETED, jobLauncherTestUtils.launchStep(STEP1).getStatus());
     }
 
     @Test
     public void testFailure() throws Exception {
         when(currencyLayerService.all()).thenThrow(new IllegalStateException("Service unavailable"));
-        Assert.assertEquals(BatchStatus.FAILED, jobLauncherTestUtils.launchStep("step1").getStatus());
+        Assert.assertEquals(BatchStatus.FAILED, jobLauncherTestUtils.launchStep(STEP1).getStatus());
     }
 
     @Test
@@ -102,6 +110,7 @@ public class CurrencyLayerBatchFlowsTest {
 
         Quotes quotes = new Quotes();
         quotes.setSuccess(true);
+        quotes.setTimestamp(System.nanoTime());
         quotes.setSource("USD");
         quotes.setQuotes(Map.of(
                 "USDUSD", 1.00,
@@ -116,7 +125,7 @@ public class CurrencyLayerBatchFlowsTest {
         counter.await();
     }
 
-    private void repeatBatch(){
+    private void repeatBatch() {
         try {
             jobLauncherTestUtils.launchJob();
             counter.countDown();

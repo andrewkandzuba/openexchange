@@ -39,6 +39,12 @@
                 <artifactId>jettison</artifactId>
                 <version>1.2</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.activemq.tooling</groupId>
+                <artifactId>activemq-junit</artifactId>
+                <version>5.14.0</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

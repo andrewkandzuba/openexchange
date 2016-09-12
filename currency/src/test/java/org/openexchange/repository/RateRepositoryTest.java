@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -35,7 +37,7 @@ public class RateRepositoryTest {
         Currency usd = new Currency("USD", "United States Dollar");
         currencyRepository.save(eur);
         currencyRepository.save(usd);
-        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.8)));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.8), Date.from(Instant.now())));
         List<Rate> rate = rateRepository.findAll();
         Assert.assertEquals(1, rate.size());
 
@@ -46,6 +48,7 @@ public class RateRepositoryTest {
         Assert.assertEquals("USD", found.getTarget().getCode());
         Assert.assertEquals("United States Dollar", found.getTarget().getDescription());
         Assert.assertEquals("1.800000", found.getQuote().toPlainString());
+        Assert.assertNotNull(found.getTimestamp());
     }
 
     @Test
@@ -55,8 +58,8 @@ public class RateRepositoryTest {
 
         currencyRepository.save(eur);
         currencyRepository.save(usd);
-        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(0.8000)));
-        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(0.8777)));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(0.8000), Date.from(Instant.now())));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(0.8777), Date.from(Instant.now())));
 
         List<Rate> rate = rateRepository.findAll();
         Assert.assertEquals(1, rate.size());
@@ -68,7 +71,7 @@ public class RateRepositoryTest {
         Currency eur = new Currency("EUR", "European Euro");
         Currency uah = new Currency("UAH", "Ukrainian Hryvna");
         currencyRepository.save(eur);
-        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(0.8)));
+        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(0.8), Date.from(Instant.now())));
     }
 
     @Test
@@ -81,8 +84,8 @@ public class RateRepositoryTest {
         currencyRepository.save(usd);
         currencyRepository.save(uah);
 
-        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(30.25)));
-        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.15)));
+        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(30.25), Date.from(Instant.now())));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.15), Date.from(Instant.now())));
 
         List<Rate> rates = rateRepository.findAll();
         Assert.assertEquals(2, rates.size());
@@ -102,9 +105,9 @@ public class RateRepositoryTest {
         currencyRepository.save(usd);
         currencyRepository.save(uah);
 
-        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(30.25)));
-        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.15)));
-        rateRepository.save(new Rate(usd, uah, BigDecimal.valueOf(26.55)));
+        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(30.25), Date.from(Instant.now())));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.15), Date.from(Instant.now())));
+        rateRepository.save(new Rate(usd, uah, BigDecimal.valueOf(26.55), Date.from(Instant.now())));
 
         List<Rate> rates = rateRepository.findByIdSource(eur);
         Assert.assertEquals(2, rates.size());
@@ -123,9 +126,9 @@ public class RateRepositoryTest {
         currencyRepository.save(usd);
         currencyRepository.save(uah);
 
-        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(30.25)));
-        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.15)));
-        rateRepository.save(new Rate(usd, uah, BigDecimal.valueOf(26.55)));
+        rateRepository.save(new Rate(eur, uah, BigDecimal.valueOf(30.25), Date.from(Instant.now())));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(1.15), Date.from(Instant.now())));
+        rateRepository.save(new Rate(usd, uah, BigDecimal.valueOf(26.55), Date.from(Instant.now())));
 
         Rate rateEurToUsd = rateRepository.findOne(new Rate.RatePK(eur, uah));
         Assert.assertEquals(eur.getCode(), rateEurToUsd.getSource().getCode());

@@ -12,18 +12,12 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
-import org.springframework.batch.core.repository.ExecutionContextSerializer;
-import org.springframework.batch.core.repository.dao.DefaultExecutionContextSerializer;
-import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.jms.JmsItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.core.JmsTemplate;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,14 +25,16 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
+    public final static String JOB1 = "job1";
+    public final static String STEP1 = "step1";
     private final static Logger logger = LoggerFactory.getLogger(BatchConfiguration.class);
 
     @Value("${spring.batch.job.restart.interval:1}")
     private long interval;
     @Value("${spring.batch.job.restart.timeUnit:MINUTES}")
     private String timeUnit;
-    @Autowired
-    private ScheduledExecutorService executorService;
+    @Value("${spring.batch.job.chunk.size:5}")
+    private int chunkSize;
     private volatile Job job;
 
     @Bean
@@ -47,25 +43,8 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public ItemProcessor processor() {
-        return new QuoteProcessor();
-    }
-
-    @Bean
-    public ItemWriter writer(@Qualifier("jmsTemplateQuotes") JmsTemplate jmsTemplate) {
-        JmsItemWriter<Quote> writer = new JmsItemWriter<>();
-        writer.setJmsTemplate(jmsTemplate);
-        return writer;
-    }
-
-    @Bean
-    public ExecutionContextSerializer executionContextSerializer() {
-        return new DefaultExecutionContextSerializer();
-    }
-
-    @Bean
-    public Job job1(JobBuilderFactory jobs, @Qualifier("step1") Step step1) {
-        job = jobs.get("job1")
+    public Job job1(JobBuilderFactory jobs, @Qualifier(STEP1) Step step1, ScheduledExecutorService executorService) {
+        job = jobs.get(JOB1)
                 .incrementer(new RunIdIncrementer())
                 .start(step1)
                 .listener(new JobExecutionListenerSupport() {
@@ -90,12 +69,11 @@ public class BatchConfiguration {
     @Bean
     public Step step1(StepBuilderFactory stepBuilderFactory,
                       ItemReader<Quote> reader,
-                      ItemWriter<Quote> writer,
-                      ItemProcessor<Quote, Quote> processor) {
-        return stepBuilderFactory.get("step1")
-                .<Quote, Quote>chunk(5)
+                      ItemWriter<Quote> writer) {
+        return stepBuilderFactory.get(STEP1)
+                .<Quote, Quote>chunk(chunkSize)
                 .reader(reader)
-                .processor(processor)
+                .processor(quote -> quote)
                 .writer(writer)
                 .faultTolerant()
                 .allowStartIfComplete(true)

@@ -16,7 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -110,7 +112,7 @@ public class CurrencyControllerTest {
         Currency usd = new Currency("USD", "United States Dollar");
         when(currencyService.findByCode("EUR")).thenReturn(eur);
         when(currencyService.findByCode("USD")).thenReturn(usd);
-        when(rateService.findRate(eur, usd)).thenReturn(new Rate(eur, usd, BigDecimal.valueOf(0.85)));
+        when(rateService.findRate(eur, usd)).thenReturn(new Rate(eur, usd, BigDecimal.valueOf(0.85), Date.from(Instant.now())));
         mockMvc.perform(get("/quotes/EUR/USD"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(0.850000));

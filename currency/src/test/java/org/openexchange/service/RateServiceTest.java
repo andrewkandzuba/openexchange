@@ -11,7 +11,9 @@ import org.openexchange.domain.Rate;
 import org.openexchange.repository.RateRepository;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -36,8 +38,8 @@ public class RateServiceTest {
 
         when(rateRepository.findByIdSource(usd))
                 .thenReturn(Arrays.asList(
-                        new Rate(usd, eur, BigDecimal.valueOf(0.85)),
-                        new Rate(usd, uah, BigDecimal.valueOf(26.55))));
+                        new Rate(usd, eur, BigDecimal.valueOf(0.85), Date.from(Instant.now())),
+                        new Rate(usd, uah, BigDecimal.valueOf(26.55), Date.from(Instant.now()))));
 
         List<Rate> ratesUsd = rateService.findRatesBySource(usd);
         Assert.assertEquals(2, ratesUsd.size());
@@ -53,7 +55,7 @@ public class RateServiceTest {
         Currency uah = new Currency("UAH", "");
 
         Rate.RatePK id = new Rate.RatePK(usd, uah);
-        when(rateRepository.findOne(id)).thenReturn(new Rate(usd, uah, BigDecimal.valueOf(26.55)));
+        when(rateRepository.findOne(id)).thenReturn(new Rate(usd, uah, BigDecimal.valueOf(26.55), Date.from(Instant.now())));
 
         Assert.assertNotNull(rateService.findRate(usd, uah));
 

@@ -3,7 +3,7 @@
   "description": "Single exchange quote details",
   "type": "object",
   "id": "Quote",
-  "additionalProperties" : false,
+  "additionalProperties": false,
   "generate-builders": true,
   "properties": {
     "source": {
@@ -17,6 +17,10 @@
     "quote": {
       "type": "number",
       "required": true
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
     }
   }
 }

@@ -2,12 +2,15 @@ package org.openexchange.domain;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
+@Access(AccessType.FIELD)
 public class Rate implements Serializable {
     private static final long serialVersionUID = 5160208533569040830L;
 
@@ -15,40 +18,34 @@ public class Rate implements Serializable {
     private RatePK id;
     @Column(precision = 10, scale = 6, nullable = false)
     private BigDecimal quote;
+    @Column(nullable = false)
+    @Type(type="timestamp")
+    private Date timestamp;
 
     public Rate() {
     }
 
-    public Rate(Currency source, Currency target, BigDecimal quote) {
+    public Rate(Currency source, Currency target, BigDecimal quote, Date timestamp) {
         this.id = new RatePK(source, target);
         this.quote = quote;
+        this.timestamp = timestamp;
     }
 
     public Currency getSource(){
         return id.getSource();
     }
-
-    void setSource(Currency source){
-        id.setSource(source);
-    }
-
     public Currency getTarget(){
         return id.getTarget();
     }
-
-    void setTarget(Currency target){
-        id.setTarget(target);
-    }
-
     public BigDecimal getQuote() {
         return quote;
     }
-
-    public void setQuote(BigDecimal quote) {
-        this.quote = quote;
+    public Date getTimestamp() {
+        return timestamp;
     }
 
     @Embeddable
+    @Access(AccessType.FIELD)
     public static class RatePK implements Serializable {
         private static final long serialVersionUID = 6663463117714621191L;
 
@@ -85,17 +82,8 @@ public class Rate implements Serializable {
         Currency getSource() {
             return source;
         }
-
-        void setSource(Currency source) {
-            this.source = source;
-        }
-
         Currency getTarget() {
             return target;
-        }
-
-        void setTarget(Currency target) {
-            this.target = target;
         }
     }
 }

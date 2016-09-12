@@ -2,6 +2,9 @@ package org.openexchange.jms;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.openexchange.protocol.Quote;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.jms.JmsItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -17,12 +20,11 @@ import javax.jms.ConnectionFactory;
 @RefreshScope
 @EnableJms
 public class JmsConfiguration {
-    @Value("${spring.jms.activemq.broker.url:tcp://127.0.0.1:61616}")
+    @Value("${spring.jms.activemq.broker.url:vm://embedded-broker?create=false}")
     private String brokerUrl;
 
     @Bean(name = "amqConnectionFactory")
-    public ConnectionFactory amqConnectionFactory(){
-        //return new ActiveMQConnectionFactory(brokerUrl, brokerUser, brokerUrl);
+    public ConnectionFactory connectionFactory(){
         return new ActiveMQConnectionFactory(brokerUrl);
     }
 
@@ -36,5 +38,12 @@ public class JmsConfiguration {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setDefaultDestination(new ActiveMQQueue("quotes.queue"));
         return jmsTemplate;
+    }
+
+    @Bean
+    public ItemWriter writer(@Qualifier("jmsTemplateQuotes") JmsTemplate jmsTemplate) {
+        JmsItemWriter<Quote> writer = new JmsItemWriter<>();
+        writer.setJmsTemplate(jmsTemplate);
+        return writer;
     }
 }

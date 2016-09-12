@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Date;
 
 @Service
 public class TransactionalService {
@@ -33,6 +35,6 @@ public class TransactionalService {
         Currency eur = new Currency("EUR","European Euro");
         currencyRepository.save(usd);
         currencyRepository.save(eur);
-        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(0.86)));
+        rateRepository.save(new Rate(eur, usd, BigDecimal.valueOf(0.86), Date.from(Instant.now())));
     }
 }
