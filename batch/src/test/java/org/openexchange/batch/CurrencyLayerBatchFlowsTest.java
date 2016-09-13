@@ -8,12 +8,13 @@ import org.mockito.Mockito;
 import org.openexchange.integration.CurrencyLayerService;
 import org.openexchange.protocol.Currencies;
 import org.openexchange.protocol.Quotes;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.*;
+import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.batch.core.launch.JobOperator;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.CollectionUtils;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledExecutorService;
@@ -37,7 +42,7 @@ import static org.openexchange.batch.BatchConfiguration.STEP1;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CurrencyLayerBatchFlowsTest.class)
 @SpringBootApplication
-@ComponentScan(basePackages = {"org.openexchange.batch", "org.openexchange.integration","org.openexchange.config"})
+@ComponentScan(basePackages = {"org.openexchange.batch", "org.openexchange.integration", "org.openexchange.config"})
 @TestPropertySource(locations = "classpath:test.properties")
 public class CurrencyLayerBatchFlowsTest {
     @Autowired
@@ -54,6 +59,12 @@ public class CurrencyLayerBatchFlowsTest {
     private QuoteTasklet quoteTasklet;
     @Autowired
     private ScheduledExecutorService scheduledExecutorService;
+    @Autowired
+    private JobExplorer jobExplorer;
+    @Autowired
+    private JobRepository jobRepository;
+    @Autowired
+    private JobOperator jobOperator;
     private CountDownLatch counter = new CountDownLatch(10);
 
     @Before
@@ -129,6 +140,27 @@ public class CurrencyLayerBatchFlowsTest {
     }
 
     private void repeatBatch() {
+        jobExplorer.getJobNames().forEach(s -> {
+            try {
+                List<JobInstance> jobInstances = jobExplorer.getJobInstances(s, 0, 1);// this will get one latest job from the database
+                if (!CollectionUtils.isEmpty(jobInstances)) {
+                    JobInstance jobInstance = jobInstances.get(0);
+                    List<JobExecution> jobExecutions = jobExplorer.getJobExecutions(jobInstance);
+                    if (!CollectionUtils.isEmpty(jobExecutions)) {
+                        for (JobExecution execution : jobExecutions) {
+                            // If the job status is STARTED then update the status to FAILED and restart the job using JobOperator.java
+                            if (execution.getStatus().equals(BatchStatus.STARTED)) {
+                                execution.setEndTime(Date.from(Instant.now()));
+                                execution.setStatus(BatchStatus.FAILED);
+                                execution.setExitStatus(ExitStatus.FAILED);
+                                jobRepository.update(execution);
+                            }
+                        }
+                    }
+                }
+            } catch (Throwable ignored) {
+            }
+        });
         try {
             jobLauncherTestUtils.launchJob();
             counter.countDown();

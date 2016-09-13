@@ -25,8 +25,8 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
-    public final static String JOB1 = "job1";
-    public final static String STEP1 = "step1";
+    private final static String JOB1 = "job1";
+    final static String STEP1 = "step1";
     private final static Logger logger = LoggerFactory.getLogger(BatchConfiguration.class);
 
     @Value("${spring.batch.job.restart.interval:1}")
