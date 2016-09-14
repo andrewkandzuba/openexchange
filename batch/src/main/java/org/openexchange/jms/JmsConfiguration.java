@@ -2,9 +2,7 @@ package org.openexchange.jms;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.openexchange.protocol.Quote;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.jms.JmsItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -58,9 +56,7 @@ public class JmsConfiguration {
     }
 
     @Bean
-    public ItemWriter writer(JmsTemplate jmsTemplate) {
-        JmsItemWriter<Quote> writer = new JmsItemWriter<>();
-        writer.setJmsTemplate(jmsTemplate);
-        return writer;
+    public ItemWriter writer(JmsTransactionalService jmsTransactionalService) {
+       return new JmsTransactionalWriter(jmsTransactionalService);
     }
 }

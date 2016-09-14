@@ -33,7 +33,7 @@ public class BatchConfiguration {
     private long interval;
     @Value("${spring.batch.job.restart.timeUnit:MINUTES}")
     private String timeUnit;
-    @Value("${spring.batch.job.chunk.size:5}")
+    @Value("${spring.batch.job.chunk.size:8}")
     private int chunkSize;
     private volatile Job job;
 
@@ -51,13 +51,7 @@ public class BatchConfiguration {
                     @Override
                     public void afterJob(JobExecution jobExecution) {
                         if (jobExecution.getExitStatus().compareTo(ExitStatus.COMPLETED) == 0) {
-                            executorService.schedule(() -> {
-                                try {
-                                    job.execute(jobExecution);
-                                } catch (Exception e) {
-                                    logger.error(e.getMessage(), e);
-                                }
-                            }, interval, TimeUnit.valueOf(timeUnit));
+                            executorService.schedule(() -> job.execute(jobExecution), interval, TimeUnit.valueOf(timeUnit));
                         } else {
                             logger.error(String.format("Job's execution has existed with status = %s. Unable to schedule next run", jobExecution.getExitStatus()));
                         }

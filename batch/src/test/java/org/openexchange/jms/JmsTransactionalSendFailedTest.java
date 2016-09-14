@@ -35,9 +35,9 @@ public class JmsTransactionalSendFailedTest {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @Test(expected = JmsTransactionalServiceException.class)
-    @Transactional(rollbackFor = JmsTransactionalServiceException.class)
-    public void transactionRollback() throws InterruptedException, JmsTransactionalServiceException {
+    @Test(expected = JmsTransactionalException.class)
+    @Transactional(rollbackFor = JmsTransactionalException.class)
+    public void transactionRollback() throws InterruptedException, JmsTransactionalException {
         Quote q1 = new Quote();
         q1.setSource("USD");
         q1.setTarget("UAH");
@@ -66,13 +66,7 @@ public class JmsTransactionalSendFailedTest {
         Assert.isNull(jmsTemplate.receive());
     }
 
-    private void failure() throws JmsTransactionalServiceException {
-        throw new JmsTransactionalServiceException("Something went wrong!!!");
-    }
-
-    static class JmsTransactionalServiceException extends Exception {
-        JmsTransactionalServiceException(String s) {
-            super(s);
-        }
+    private void failure() throws JmsTransactionalException {
+        throw new JmsTransactionalException("Something went wrong!!!");
     }
 }
