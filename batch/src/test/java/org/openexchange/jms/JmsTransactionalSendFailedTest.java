@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -66,7 +67,13 @@ public class JmsTransactionalSendFailedTest {
         Assert.isNull(jmsTemplate.receive());
     }
 
-    private void failure() throws JmsTransactionalException {
+    private void failure() throws JmsException {
         throw new JmsTransactionalException("Something went wrong!!!");
+    }
+
+    private static class JmsTransactionalException extends JmsException {
+        JmsTransactionalException(String msg) {
+            super(msg);
+        }
     }
 }
