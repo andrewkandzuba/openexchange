@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
+@EnableRetry
 public class CurrencyLayerServiceImpl implements CurrencyLayerService {
     private static final Logger logger = LoggerFactory.getLogger(CurrencyLayerServiceImpl.class.getName());
     @Autowired

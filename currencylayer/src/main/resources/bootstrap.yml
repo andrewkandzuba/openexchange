@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: batch
+    name: currencylayer
   cloud:
     config:
       fail-fast: true

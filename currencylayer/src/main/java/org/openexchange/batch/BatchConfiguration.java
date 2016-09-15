@@ -22,10 +22,6 @@ public class BatchConfiguration {
     private final static String JOB1 = "job1";
     final static String STEP1 = "step1";
 
-    @Value("${spring.batch.job.restart.interval:1}")
-    private long interval;
-    @Value("${spring.batch.job.restart.timeUnit:MINUTES}")
-    private String timeUnit;
     @Value("${spring.batch.job.chunk.size:8}")
     private int chunkSize;
 
@@ -35,7 +31,7 @@ public class BatchConfiguration {
     }
 
     @Bean(name = JOB1)
-    public Job job1(JobBuilderFactory jobs, @Qualifier(STEP1) Step step1, ScheduledExecutorService executorService) {
+    public Job job1(JobBuilderFactory jobs, @Qualifier(STEP1) Step step1) {
         return jobs.get(JOB1)
                 .incrementer(new RunIdIncrementer())
                 .start(step1)
