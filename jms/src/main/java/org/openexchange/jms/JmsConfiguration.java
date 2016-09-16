@@ -26,7 +26,6 @@ public class JmsConfiguration {
     @Value("${spring.jms.broker.receive.timeout.interval:10}")
     private long receiveTimeoutInterval;
 
-
     @Bean
     public ConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerUrl);
