@@ -1,15 +1,12 @@
 package org.openexchange.jms;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.ActiveMQQueue;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.CachingConnectionFactory;
-import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -22,8 +19,6 @@ import java.util.concurrent.TimeUnit;
 @EnableJms
 @EnableTransactionManagement
 public class JmsConfiguration {
-    static final String QUOTES_QUEUE = "quotes.queue";
-
     @Value("${spring.jms.broker.url:tcp://127.0.0.1:61616}")
     private String brokerUrl;
     @Value("${spring.jms.broker.receive.timeout.timeUnit:SECONDS}")
@@ -33,7 +28,7 @@ public class JmsConfiguration {
 
 
     @Bean
-    public ConnectionFactory jmsConnectionFactory() {
+    public ConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerUrl);
         connectionFactory.setObjectMessageSerializationDefered(true);
         connectionFactory.setCopyMessageOnSend(false);
@@ -41,22 +36,11 @@ public class JmsConfiguration {
     }
 
     @Bean
-    public JmsTransactionManager jmsTransactionManager() {
-        return new JmsTransactionManager(jmsConnectionFactory());
-    }
-
-    @Bean
-    public JmsTemplate jmsTemplate(ConnectionFactory cachingConnectionFactory) {
-        JmsTemplate jmsTemplate = new JmsTemplate(cachingConnectionFactory);
-        jmsTemplate.setDefaultDestination(new ActiveMQQueue(JmsConfiguration.QUOTES_QUEUE));
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
         jmsTemplate.setSessionAcknowledgeMode(Session.SESSION_TRANSACTED);
         jmsTemplate.setSessionTransacted(true);
         jmsTemplate.setReceiveTimeout(TimeUnit.valueOf(receiveTimeoutTimeUnit).toMillis(receiveTimeoutInterval));
         return jmsTemplate;
-    }
-
-    @Bean
-    public ItemWriter writer(JmsTransactionalService jmsTransactionalService) {
-       return new JmsTransactionalWriter(jmsTransactionalService);
     }
 }

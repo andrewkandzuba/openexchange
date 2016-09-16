@@ -8,23 +8,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class QuoteReader implements ItemReader<Quote>, ItemStream {
-    private static final Logger logger = LoggerFactory.getLogger(QuoteReader.class);
-    private static final String CURRENT_INDEX = "current.index";
+@Component
+public class QuotesReader implements ItemReader<Quote>, ItemStream {
+    private static final Logger logger = LoggerFactory.getLogger(QuotesReader.class);
+    private static final String CURRENT_INDEX = "quotes.reader.current.index";
     private final List<Quote> quotes = new CopyOnWriteArrayList<>();
+    private final CurrencyLayerService currencyLayerService;
     private volatile int currentIndex = 0;
 
     @Autowired
-    private CurrencyLayerService currencyLayerService;
+    public QuotesReader(CurrencyLayerService currencyLayerService) {
+        this.currencyLayerService = currencyLayerService;
+    }
 
     @Override
-    public Quote read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+    public Quote read() throws Exception {
         if (currentIndex < quotes.size()) {
             return quotes.get(currentIndex++);
         }

@@ -23,6 +23,8 @@ import org.springframework.util.Assert;
 import java.time.Instant;
 import java.util.Date;
 
+import static org.openexchange.jms.JmsQuotesTransactionalService.QUOTES_QUEUE;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JmsTransactionalSendFailedTest.class)
 @SpringBootApplication
@@ -51,9 +53,9 @@ public class JmsTransactionalSendFailedTest {
         q2.setQuote(0.93);
         q2.setTimestamp(Date.from(Instant.now()));
 
-        jmsTemplate.convertAndSend(q1);
+        jmsTemplate.convertAndSend(QUOTES_QUEUE, q1);
         failure();
-        jmsTemplate.convertAndSend(q2);
+        jmsTemplate.convertAndSend(QUOTES_QUEUE, q2);
     }
 
     @BeforeTransaction
@@ -64,7 +66,7 @@ public class JmsTransactionalSendFailedTest {
     @AfterTransaction
     void afterTransaction() {
         logger.info("After transaction");
-        Assert.isNull(jmsTemplate.receive());
+        Assert.isNull(jmsTemplate.receive(QUOTES_QUEUE));
     }
 
     private void failure() throws JmsException {
