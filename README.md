@@ -3,8 +3,6 @@
 # To-Do lists:
 
 ## High
-* Add JMS to infra layer. 
-* Populate updates from **currencylayer service** into JMS.
 * Update rate table on push notification in **currency service**
 
 ## Medium

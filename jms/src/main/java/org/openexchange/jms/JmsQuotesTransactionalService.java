@@ -10,16 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-class JmsTransactionalService {
+public class JmsQuotesTransactionalService {
+    static final String QUOTES_QUEUE = "quotes.queue";
     private final JmsTemplate jmsTemplate;
 
     @Autowired
-    public JmsTransactionalService(JmsTemplate jmsTemplate) {
+    public JmsQuotesTransactionalService(JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }
 
     @Transactional(rollbackFor = Throwable.class)
-    void write(List<? extends Quote> list) throws JmsException {
-        list.forEach(jmsTemplate::convertAndSend);
+    public void write(List<? extends Quote> list) throws JmsException {
+        list.forEach(o -> jmsTemplate.convertAndSend(QUOTES_QUEUE, o));
     }
 }

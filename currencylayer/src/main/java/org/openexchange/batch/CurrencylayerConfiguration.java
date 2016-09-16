@@ -1,5 +1,7 @@
 package org.openexchange.batch;
 
+import org.openexchange.integration.CurrencyLayerService;
+import org.openexchange.jms.JmsQuotesTransactionalService;
 import org.openexchange.protocol.Quote;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -11,38 +13,35 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.concurrent.ScheduledExecutorService;
-
 @Configuration
+@RefreshScope
 @EnableBatchProcessing
-public class BatchConfiguration {
-    private final static String JOB1 = "job1";
-    final static String STEP1 = "step1";
-
+public class CurrencylayerConfiguration {
     @Value("${spring.batch.job.chunk.size:8}")
     private int chunkSize;
 
     @Bean
-    public ItemReader reader() {
-        return new QuoteReader();
+    public ItemReader reader(CurrencyLayerService currencyLayerService) {
+        return new QuotesReader(currencyLayerService);
     }
 
-    @Bean(name = JOB1)
-    public Job job1(JobBuilderFactory jobs, @Qualifier(STEP1) Step step1) {
-        return jobs.get(JOB1)
+    @Bean(name = "job1")
+    public Job job1(JobBuilderFactory jobs, @Qualifier("step1") Step step1) {
+        return jobs.get("job1")
                 .incrementer(new RunIdIncrementer())
                 .start(step1)
                 .build();
     }
 
-    @Bean(name = STEP1)
+    @Bean(name = "step1")
     public Step step1(StepBuilderFactory stepBuilderFactory,
                       ItemReader<Quote> reader,
                       ItemWriter<Quote> writer) {
-        return stepBuilderFactory.get(STEP1)
+        return stepBuilderFactory.get("step1")
                 .<Quote, Quote>chunk(chunkSize)
                 .reader(reader)
                 .processor(quote -> quote)
@@ -50,5 +49,10 @@ public class BatchConfiguration {
                 .faultTolerant()
                 .allowStartIfComplete(true)
                 .build();
+    }
+
+    @Bean
+    public ItemWriter<Quote> itemWriter(JmsQuotesTransactionalService service){
+        return service::write;
     }
 }

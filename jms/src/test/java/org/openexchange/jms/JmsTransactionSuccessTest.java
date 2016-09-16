@@ -25,7 +25,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
-import static org.openexchange.jms.JmsConfiguration.QUOTES_QUEUE;
+import static org.openexchange.jms.JmsQuotesTransactionalService.QUOTES_QUEUE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JmsTransactionSuccessTest.class)
@@ -79,6 +79,6 @@ public class JmsTransactionSuccessTest {
         quote.setTarget("UAH");
         quote.setQuote(30.2);
         quote.setTimestamp(Date.from(Instant.now()));
-        jmsTemplate.convertAndSend(quote);
+        jmsTemplate.convertAndSend(QUOTES_QUEUE, quote);
     }
 }
