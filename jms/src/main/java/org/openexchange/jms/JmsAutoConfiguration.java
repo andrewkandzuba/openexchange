@@ -30,6 +30,7 @@ public class JmsAutoConfiguration {
     public ConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerUrl);
         connectionFactory.setObjectMessageSerializationDefered(true);
+        connectionFactory.setTrustAllPackages(true);
         connectionFactory.setCopyMessageOnSend(false);
         return new CachingConnectionFactory(connectionFactory);
     }

@@ -21,7 +21,7 @@ public class SmsReceiveServiceImpl implements SmsReceiveService {
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "smsTransactionManager")
     public Collection<Sms> receive(String destination, int chunkSize) throws JmsException {
         Collection<Sms> messages = new HashSet<>();
         while (chunkSize-- > 0){
