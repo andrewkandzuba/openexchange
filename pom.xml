@@ -57,6 +57,7 @@
         <module>currencylayer</module>
         <module>jms</module>
         <module>batch</module>
+        <module>sms</module>
     </modules>
 
     <build>

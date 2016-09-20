@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @RefreshScope
 @EnableJms
 @EnableTransactionManagement
-public class JmsConfiguration {
+public class JmsAutoConfiguration {
     @Value("${spring.jms.broker.url:tcp://127.0.0.1:61616}")
     private String brokerUrl;
     @Value("${spring.jms.broker.receive.timeout.timeUnit:SECONDS}")

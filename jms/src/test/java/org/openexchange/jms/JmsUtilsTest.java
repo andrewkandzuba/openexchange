@@ -1,6 +1,9 @@
 package org.openexchange.jms;
 
+import org.apache.activemq.junit.EmbeddedActiveMQBroker;
+import org.junit.Rule;
 import org.openexchange.protocol.Quote;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.UncategorizedJmsException;
 import org.springframework.jms.core.JmsTemplate;
@@ -12,6 +15,10 @@ import java.util.Date;
 
 public abstract class JmsUtilsTest {
     static final String TEST_QUOTE_QUEUE = "test.quote.queue";
+    @Rule
+    public EmbeddedActiveMQBroker broker = new EmbeddedActiveMQBroker();
+    @Autowired
+    protected JmsTemplate jmsTemplate;
 
     private void failure() throws JmsException {
         throw new UncategorizedJmsException("Something went wrong!!!");
