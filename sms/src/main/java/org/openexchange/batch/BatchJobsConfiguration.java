@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
@@ -100,8 +99,8 @@ public class BatchJobsConfiguration {
     @Bean(name = "incoming_sms_read_step")
     public Step step2(StepBuilderFactory stepBuilderFactory, SmsReceiveService smsReceiveService) {
         return stepBuilderFactory.get("incoming_sms_read_step").tasklet((stepContribution, chunkContext) -> {
-            Collection<Sms> messages = smsReceiveService.receive(SMS_QUEUE, MAX_READ_CHUNK_SIZE);
-            return RepeatStatus.CONTINUABLE;
+            smsReceiveService.receive(SMS_QUEUE, MAX_READ_CHUNK_SIZE);
+            return RepeatStatus.FINISHED;
         }).taskExecutor(new ConcurrentTaskScheduler(scheduledExecutorService)).allowStartIfComplete(true).build();
     }
 }

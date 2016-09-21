@@ -56,7 +56,7 @@ public class BatchJobScheduler {
                 }
                 JobParametersIncrementer incrementer = job.getJobParametersIncrementer();
                 if(incrementer != null){
-                    jobLauncher.run(job, job.getJobParametersIncrementer().getNext(jobExecution.getJobParameters()));
+                    jobLauncher.run(job, incrementer.getNext(jobExecution.getJobParameters()));
                 } else {
                     jobLauncher.run(job, jobExecution.getJobParameters());
                 }
