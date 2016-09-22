@@ -1,8 +1,8 @@
 # Overview
 
-**Batch Service Library**
+**Batch scheduled jobs library**
 
-The library retrieves all instances of org.springframework.batch.core.Job and tries to rerun them based on the predefined fixed rate 
+The library discovers all visible methods annotated with @Job in @Configuration classes loaded into ApplicationContext and then try to schedule a repeatable tasks.
 
 # Configuration
 
@@ -10,8 +10,9 @@ The library retrieves all instances of org.springframework.batch.core.Job and tr
 
 | Name | Default value | Description | 
 | --- | --- | --- |
-| spring.batch.job.restart.interval.milliseconds | 600000 | An interval between the successful completion and the next launch of the certain batch job's execution in milliseconds |
-    
+| spring.batch.job.restart.interval | 100000 | An interval between the successful completion and the next launch of the certain batch job's execution |
+| spring.batch.job.restart.timeunit | MINUTES | An interval time units |
+
 # Bootstrap
 
 ## Local

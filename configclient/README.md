@@ -13,5 +13,4 @@ Environment variables:
 | CONFIG_SERVER_HOST | | A name or an IP address of global Configuration Service |
 | CONFIG_SERVER_PORT | 8888 | A port of global Configuration Service |
 | CONFIG_SERVER_PASSWORD | | A password of global Configuration Service | 
-| spring.cloud.config.refresh.interval | 1 | An interval between two sequential pulls from *Configuration Server* |
-| spring.cloud.config.refresh.timeUnit | 'MINUTES' | A pull's time unit from `java.util.concurrent.TimeUnit` |
+| spring.cloud.config.refresh.enabled | true | Defines whether configuration refresh feature is on |

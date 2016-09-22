@@ -1,8 +1,11 @@
 # Overview
 
-**JMS Library**
+**JMS Autoconfigation library Library**
 
 The facilitation library of commons beans, configurations and settings required for messages exchange over JMS
+
+# Supported JMS implementations
+- ActiveMQ
 
 # Configuration
 

@@ -28,25 +28,25 @@ class SmsServiceImpl implements SmsService {
 
     @Override
     @Transactional(noRollbackFor = Throwable.class)
-    public void write(String destination, Sms message) throws JmsException {
-        jmsTemplate.convertAndSend(destination, message);
+    public void write(Sms message) throws JmsException {
+        jmsTemplate.convertAndSend(SMS_OUTBOUND_QUEUE, message);
     }
 
     @Override
     @Transactional(noRollbackFor = Throwable.class)
-    public void write(String destination, Collection<? extends Sms> messages) throws JmsException {
+    public void write(Collection<? extends Sms> messages) throws JmsException {
         messages.forEach(message -> {
-            jmsTemplate.convertAndSend(destination, message);
+            jmsTemplate.convertAndSend(SMS_OUTBOUND_QUEUE, message);
             logger.debug("Message has been sent: [" + message + "]");
         });
     }
 
     @Override
     @Transactional(noRollbackFor = Throwable.class)
-    public void receive(String destination, int chunkSize) throws JmsException {
+    public void receive(int chunkSize) throws JmsException {
         Collection<Sms> messages = new HashSet<>();
         while (chunkSize-- > 0) {
-            Sms message = (Sms) jmsTemplate.receiveAndConvert(destination);
+            Sms message = (Sms) jmsTemplate.receiveAndConvert(SMS_OUTBOUND_QUEUE);
             if(message == null){
                 logger.debug("No message is available");
                 break;

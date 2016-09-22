@@ -1,4 +1,4 @@
-package org.openexchange.config;
+package org.openexchange.jobs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class SchedulerExecutorServiceBean {
-    private final static Logger logger = LoggerFactory.getLogger(RefreshService.class);
+    private final static Logger logger = LoggerFactory.getLogger(SchedulerExecutorServiceBean.class);
     private ScheduledExecutorService scheduledExecutorService;
 
     @PostConstruct
