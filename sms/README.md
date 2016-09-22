@@ -10,6 +10,10 @@ Test service to verify concurrency aspects of JMS/JPA combination
 
 | Name | Default value | Description | 
 | --- | --- | --- |
+| server.port | 8084 | A local bind port |
+| jdk.launcher.addmods | | Include into JVM arguments if run on JDK9: java.xml.bind,java.annotations.common |
+
+Properties inherited from **JMS Library**
     
 # Bootstrap
 

@@ -10,17 +10,17 @@ public class Sms implements Serializable {
     private static final long serialVersionUID = -4214775545721925949L;
     @Id
     @GeneratedValue
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, name = "CODE")
     private Integer code;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, name = "MESSAGEID")
     private String messageId;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "MOBILEORIGINATE")
     private String mobileOriginate;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "MOBILETERMINATE")
     private String mobileTerminate;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "TEXT")
     private String text;
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", name = "RECEIVETIME")
     private Date receiveTime;
 
     public Sms() {
@@ -31,6 +31,14 @@ public class Sms implements Serializable {
         this.mobileOriginate = mobileOriginate;
         this.mobileTerminate = mobileTerminate;
         this.text = text;
+    }
+
+    public Sms(String messageId, String mobileOriginate, String mobileTerminate, String text, Date receiveTime) {
+        this.messageId = messageId;
+        this.mobileOriginate = mobileOriginate;
+        this.mobileTerminate = mobileTerminate;
+        this.text = text;
+        this.receiveTime = receiveTime;
     }
 
     public Integer getCode() {

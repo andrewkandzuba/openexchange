@@ -23,7 +23,7 @@ public class JmsAutoConfiguration {
     private String brokerUrl;
     @Value("${spring.jms.broker.receive.timeout.timeUnit:SECONDS}")
     private String receiveTimeoutTimeUnit;
-    @Value("${spring.jms.broker.receive.timeout.interval:10}")
+    @Value("${spring.jms.broker.receive.timeout.interval:1}")
     private long receiveTimeoutInterval;
 
     @Bean
