@@ -1,13 +1,11 @@
-package org.openexchange.jms.activemq;
+package org.openexchange.jms;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
-import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -21,9 +19,7 @@ import java.util.concurrent.TimeUnit;
 @RefreshScope
 @EnableJms
 @EnableTransactionManagement
-public class JmsActiveMQAutoConfiguration {
-    @Value("${spring.jms.broker.url:tcp://127.0.0.1:61616}")
-    private String brokerUrl;
+public class JmsTemplateAutoConfiguration {
     @Value("${spring.jms.broker.receive.timeout.timeUnit:SECONDS}")
     private String receiveTimeoutTimeUnit;
     @Value("${spring.jms.broker.receive.timeout.interval:1}")
@@ -33,15 +29,6 @@ public class JmsActiveMQAutoConfiguration {
     @ConditionalOnMissingBean(PlatformTransactionManager.class)
     public PlatformTransactionManager transactionManager(ConnectionFactory connectionFactory) {
         return new JmsTransactionManager(connectionFactory);
-    }
-
-    @Bean
-    public ConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerUrl);
-        connectionFactory.setObjectMessageSerializationDefered(true);
-        connectionFactory.setTrustAllPackages(true);
-        connectionFactory.setCopyMessageOnSend(false);
-        return new CachingConnectionFactory(connectionFactory);
     }
 
     @Bean

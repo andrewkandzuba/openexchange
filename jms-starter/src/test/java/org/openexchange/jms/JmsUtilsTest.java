@@ -1,4 +1,4 @@
-package org.openexchange.jms.activemq;
+package org.openexchange.jms;
 
 import org.apache.activemq.junit.EmbeddedActiveMQBroker;
 import org.junit.Rule;

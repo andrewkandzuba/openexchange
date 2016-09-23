@@ -1,4 +1,4 @@
-package org.openexchange.jms.activemq;
+package org.openexchange.jms;
 
 import org.junit.Assert;
 import org.junit.Test;
