@@ -1,5 +1,6 @@
 package org.openexchange.jms;
 
+import org.openexchange.protocol.Mapping;
 import org.openexchange.protocol.Quote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Service
 public class JmsQuotesTransactionalService {
-    private static final String QUOTES_QUEUE = "quotes.queue";
+    private static final String QUOTES_QUEUE = Mapping.queues.get(Quote.class);
     private final JmsTemplate jmsTemplate;
 
     @Autowired

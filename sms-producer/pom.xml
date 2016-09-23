@@ -10,7 +10,7 @@
         <version>1.0.5-SNAPSHOT</version>
     </parent>
 
-    <artifactId>currencylayer</artifactId>
+    <artifactId>sms-producer</artifactId>
     <version>1.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -20,11 +20,6 @@
         <dependency>
             <groupId>org.openexchange</groupId>
             <artifactId>configclient</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openexchange</groupId>
-            <artifactId>batch</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
@@ -42,31 +37,8 @@
             <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.retry</groupId>
-            <artifactId>spring-retry</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.batch</groupId>
-            <artifactId>spring-batch-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -90,15 +62,6 @@
                 <targetPath>${project.build.directory}</targetPath>
             </resource>
         </resources>
-        <testResources>
-            <testResource>
-                <filtering>true</filtering>
-                <directory>src/test/resources</directory>
-                <includes>
-                    <include>**/test.properties</include>
-                </includes>
-            </testResource>
-        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -116,10 +79,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.jsonschema2pojo</groupId>
-                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-            </plugin>
         </plugins>
     </build>
+
+
 </project>

@@ -58,7 +58,8 @@
         <module>cashier</module>
         <module>currency</module>
         <module>currencylayer</module>
-        <module>sms</module>
+        <module>sms-consumer</module>
+        <module>sms-producer</module>
     </modules>
 
     <build>
@@ -152,6 +153,7 @@
                         <targetPackage>org.openexchange.protocol</targetPackage>
                         <useCommonsLang3>true</useCommonsLang3>
                         <serializable>true</serializable>
+                        <generateBuilders>true</generateBuilders>
                     </configuration>
                 </plugin>
             </plugins>

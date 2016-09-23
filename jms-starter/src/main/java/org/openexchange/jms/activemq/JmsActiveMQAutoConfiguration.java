@@ -2,12 +2,15 @@ package org.openexchange.jms.activemq;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.CachingConnectionFactory;
+import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.jms.ConnectionFactory;
@@ -25,6 +28,12 @@ public class JmsActiveMQAutoConfiguration {
     private String receiveTimeoutTimeUnit;
     @Value("${spring.jms.broker.receive.timeout.interval:1}")
     private long receiveTimeoutInterval;
+
+    @Bean
+    @ConditionalOnMissingBean(PlatformTransactionManager.class)
+    public PlatformTransactionManager transactionManager(ConnectionFactory connectionFactory) {
+        return new JmsTransactionManager(connectionFactory);
+    }
 
     @Bean
     public ConnectionFactory connectionFactory() {
