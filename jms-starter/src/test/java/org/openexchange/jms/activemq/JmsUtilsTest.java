@@ -1,8 +1,7 @@
-package org.openexchange.jms;
+package org.openexchange.jms.activemq;
 
 import org.apache.activemq.junit.EmbeddedActiveMQBroker;
 import org.junit.Rule;
-import org.openexchange.protocol.Quote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.UncategorizedJmsException;
@@ -10,11 +9,8 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.Date;
-
 public abstract class JmsUtilsTest {
-    static final String TEST_QUOTE_QUEUE = "test.quote.queue";
+    static final String TEST_JMS_QUEUE = "test.jms.queue";
     @Rule
     public EmbeddedActiveMQBroker broker = new EmbeddedActiveMQBroker();
     @Autowired
@@ -26,39 +22,21 @@ public abstract class JmsUtilsTest {
 
     @Transactional(rollbackFor = JmsException.class, propagation = Propagation.REQUIRES_NEW)
     void failedToSend(JmsTemplate jmsTemplate, String destination) {
-        Quote q1 = new Quote();
-        q1.setSource("USD");
-        q1.setTarget("UAH");
-        q1.setQuote(30.2);
-        q1.setTimestamp(Date.from(Instant.now()));
+        String s1 = "message1";
+        String s2 = "message2";
 
-        Quote q2 = new Quote();
-        q2.setSource("USD");
-        q2.setTarget("EUR");
-        q2.setQuote(0.93);
-        q2.setTimestamp(Date.from(Instant.now()));
-
-        jmsTemplate.convertAndSend(destination, q1);
+        jmsTemplate.convertAndSend(destination, s1);
         failure();
-        jmsTemplate.convertAndSend(destination, q2);
+        jmsTemplate.convertAndSend(destination, s2);
     }
 
     @Transactional(rollbackFor = JmsException.class, propagation = Propagation.REQUIRES_NEW)
     void successToSend(JmsTemplate jmsTemplate, String destination) {
-        Quote q1 = new Quote();
-        q1.setSource("USD");
-        q1.setTarget("UAH");
-        q1.setQuote(30.2);
-        q1.setTimestamp(Date.from(Instant.now()));
+        String s1 = "message1";
+        String s2 = "message2";;
 
-        Quote q2 = new Quote();
-        q2.setSource("USD");
-        q2.setTarget("EUR");
-        q2.setQuote(0.93);
-        q2.setTimestamp(Date.from(Instant.now()));
-
-        jmsTemplate.convertAndSend(destination, q1);
-        jmsTemplate.convertAndSend(destination, q2);
+        jmsTemplate.convertAndSend(destination, s1);
+        jmsTemplate.convertAndSend(destination, s2);
     }
 
     @Transactional(rollbackFor = JmsException.class, propagation = Propagation.REQUIRES_NEW)

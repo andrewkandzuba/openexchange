@@ -1,4 +1,4 @@
-package org.openexchange.jms;
+package org.openexchange.jms.activemq;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;

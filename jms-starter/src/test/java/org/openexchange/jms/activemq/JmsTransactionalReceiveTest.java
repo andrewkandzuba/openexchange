@@ -1,4 +1,4 @@
-package org.openexchange.jms;
+package org.openexchange.jms.activemq;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,22 +21,22 @@ public class JmsTransactionalReceiveTest extends JmsUtilsTest {
     @Test
     @Transactional
     public void readRollback() {
-        Assert.assertNull(jmsTemplate.receiveAndConvert(TEST_QUOTE_QUEUE));
-        successToSend(jmsTemplate, TEST_QUOTE_QUEUE);
+        Assert.assertNull(jmsTemplate.receiveAndConvert(TEST_JMS_QUEUE));
+        successToSend(jmsTemplate, TEST_JMS_QUEUE);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
         TestTransaction.start();
         try {
-            failedRead(jmsTemplate, TEST_QUOTE_QUEUE);
+            failedRead(jmsTemplate, TEST_JMS_QUEUE);
             TestTransaction.flagForCommit();
         } catch (JmsException ignored){
             TestTransaction.flagForRollback();
         }
         TestTransaction.end();
 
-        Assert.assertNotNull(jmsTemplate.receive(TEST_QUOTE_QUEUE));
-        Assert.assertNotNull(jmsTemplate.receive(TEST_QUOTE_QUEUE));
-        Assert.assertNull(jmsTemplate.receive(TEST_QUOTE_QUEUE));
+        Assert.assertNotNull(jmsTemplate.receive(TEST_JMS_QUEUE));
+        Assert.assertNotNull(jmsTemplate.receive(TEST_JMS_QUEUE));
+        Assert.assertNull(jmsTemplate.receive(TEST_JMS_QUEUE));
     }
 }

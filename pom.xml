@@ -49,14 +49,15 @@
     </dependencyManagement>
 
     <modules>
+        <module>batch</module>
+        <module>jms-protocol</module>
+        <module>jms-starter</module>
         <module>registry</module>
         <module>configserver</module>
         <module>configclient</module>
         <module>cashier</module>
         <module>currency</module>
         <module>currencylayer</module>
-        <module>jms</module>
-        <module>batch</module>
         <module>sms</module>
     </modules>
 
