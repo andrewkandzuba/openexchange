@@ -13,7 +13,7 @@ Test service to verify concurrency aspects of JMS/JPA combination from the consu
 | server.port | 8085 | A local bind port |
 | jdk.launcher.addmods | | Include into JVM arguments if run on JDK9: java.xml.bind,java.annotations.common |
 | sms.outbound.queue.write.chunk.size | 100 | The most number of messages produced ber a turn  |
-| spring.jms.producer.concurrency | 1 | The number of parallel producers |
+| spring.producer.concurrency | 1 | The number of parallel producers |
 
 Properties inherited from **JMS Library**
     

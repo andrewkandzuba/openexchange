@@ -1,4 +1,7 @@
-package org.openexchange.protocol;
+package org.openexchange.jms;
+
+import org.openexchange.protocol.Quote;
+import org.openexchange.protocol.Sms;
 
 import java.util.Collections;
 import java.util.Map;

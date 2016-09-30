@@ -24,12 +24,12 @@
         </dependency>
         <dependency>
             <groupId>org.openexchange</groupId>
-            <artifactId>jms-protocol</artifactId>
+            <artifactId>sms</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openexchange</groupId>
-            <artifactId>jms-starter</artifactId>
+            <artifactId>activemq-transport</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
@@ -81,6 +81,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

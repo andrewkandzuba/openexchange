@@ -55,16 +55,20 @@
 
     <modules>
         <module>batch</module>
-        <module>jms-protocol</module>
-        <module>jms-starter</module>
+        <module>configclient</module>
         <module>registry</module>
         <module>configserver</module>
-        <module>configclient</module>
+
         <module>cashier</module>
+        <module>quote</module>
         <module>currency</module>
         <module>currencylayer</module>
+
+        <module>sms</module>
         <module>sms-consumer</module>
         <module>sms-producer</module>
+
+        <module>activemq-transport</module>
     </modules>
 
     <build>
@@ -153,7 +157,7 @@
                     </executions>
                     <configuration>
                         <includeJsr303Annotations>true</includeJsr303Annotations>
-                        <sourceDirectory>${basedir}/src/main/resources/protocol</sourceDirectory>
+                        <sourceDirectory>${basedir}/src/main/resources/pojos</sourceDirectory>
                         <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
                         <targetPackage>org.openexchange.protocol</targetPackage>
                         <useCommonsLang3>true</useCommonsLang3>

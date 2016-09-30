@@ -10,13 +10,23 @@
         <version>1.0.5-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jms-starter</artifactId>
+    <artifactId>activemq-transport</artifactId>
     <version>1.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>openexchange ::: ${project.artifactId}</name>
 
     <dependencies>
+        <dependency>
+            <groupId>org.openexchange</groupId>
+            <artifactId>quote</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openexchange</groupId>
+            <artifactId>sms</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-activemq</artifactId>

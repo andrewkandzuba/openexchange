@@ -2,9 +2,9 @@ package org.openexchange.jobs;
 
 import org.openexchange.integration.CurrencyLayerService;
 import org.openexchange.integration.ServiceException;
-import org.openexchange.jms.JmsQuotesTransactionalService;
 import org.openexchange.protocol.Quote;
 import org.openexchange.protocol.Quotes;
+import org.openexchange.quote.QuoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -21,11 +21,11 @@ public class CurrencylayerConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(CurrencylayerConfiguration.class);
 
     private final CurrencyLayerService currencyLayerService;
-    private final JmsQuotesTransactionalService jmsQuotesTransactionalService;
+    private final QuoteService quoteService;
 
-    public CurrencylayerConfiguration(CurrencyLayerService currencyLayerService, JmsQuotesTransactionalService jmsQuotesTransactionalService) {
+    public CurrencylayerConfiguration(CurrencyLayerService currencyLayerService, QuoteService quoteService) {
         this.currencyLayerService = currencyLayerService;
-        this.jmsQuotesTransactionalService = jmsQuotesTransactionalService;
+        this.quoteService = quoteService;
     }
 
     @Job(concurrencyString = "1")
@@ -38,7 +38,7 @@ public class CurrencylayerConfiguration {
             response.getQuotes()
                     .entrySet()
                     .forEach(entry -> quotes.add(build(entry.getKey().substring(0, 3), entry.getKey().substring(3, 6), entry.getValue(), timestamp)));
-            jmsQuotesTransactionalService.write(quotes);
+            quoteService.write(quotes);
         } catch (ServiceException e) {
             logger.error(e.getMessage(), e);
         }
