@@ -54,21 +54,9 @@
     </dependencyManagement>
 
     <modules>
-        <module>batch</module>
-        <module>configclient</module>
-        <module>registry</module>
-        <module>configserver</module>
-
-        <module>cashier</module>
-        <module>quote</module>
-        <module>currency</module>
-        <module>currencylayer</module>
-
-        <module>sms</module>
-        <module>sms-consumer</module>
-        <module>sms-producer</module>
-
-        <module>activemq-transport</module>
+        <module>system</module>
+        <module>payments</module>
+        <module>messaging</module>
     </modules>
 
     <build>
@@ -159,10 +147,18 @@
                         <includeJsr303Annotations>true</includeJsr303Annotations>
                         <sourceDirectory>${basedir}/src/main/resources/pojos</sourceDirectory>
                         <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
-                        <targetPackage>org.openexchange.protocol</targetPackage>
+                        <targetPackage>org.openexchange.pojos</targetPackage>
                         <useCommonsLang3>true</useCommonsLang3>
                         <serializable>true</serializable>
                         <generateBuilders>true</generateBuilders>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/target</outputDirectory>
                     </configuration>
                 </plugin>
             </plugins>
