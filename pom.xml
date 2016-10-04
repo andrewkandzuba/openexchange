@@ -72,7 +72,7 @@
                         <meminitial>1024m</meminitial>
                         <maxmem>4096m</maxmem>
                         <compilerArgs>
-                            <arg>-addmods</arg>
+                            <arg>--add-modules</arg>
                             <arg>java.xml.bind,java.annotations.common</arg>
                         </compilerArgs>
                     </configuration>
@@ -87,13 +87,16 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/target</outputDirectory>
+                    </configuration>
                     <version>3.0.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
-                        <argLine>-Djdk.launcher.addmods=java.xml.bind,java.annotations.common</argLine>
+                        <argLine>--add-modules java.xml.bind,java.annotations.common</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -151,14 +154,6 @@
                         <useCommonsLang3>true</useCommonsLang3>
                         <serializable>true</serializable>
                         <generateBuilders>true</generateBuilders>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.0.2</version>
-                    <configuration>
-                        <outputDirectory>${project.build.directory}/target</outputDirectory>
                     </configuration>
                 </plugin>
             </plugins>

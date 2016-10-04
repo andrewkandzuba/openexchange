@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>org.openexchange</groupId>
-        <artifactId>openexchange</artifactId>
+        <artifactId>messaging</artifactId>
         <version>1.0.5-SNAPSHOT</version>
     </parent>
 
