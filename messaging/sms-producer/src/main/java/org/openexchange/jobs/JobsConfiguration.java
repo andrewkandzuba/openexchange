@@ -38,9 +38,4 @@ public class JobsConfiguration {
         }
         smsService.send(messages);
     }
-
-/*    @Bean
-    public PlatformTransactionManager transactionManager(ConnectionFactory connectionFactory){
-        return new JmsTransactionManager(connectionFactory);
-    }*/
 }
