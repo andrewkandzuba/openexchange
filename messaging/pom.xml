@@ -21,6 +21,7 @@
         <module>activemq-sms-transport</module>
         <module>sms-consumer</module>
         <module>sms-producer</module>
+        <module>rabbitmq-sms-transport</module>
     </modules>
 
 </project>
