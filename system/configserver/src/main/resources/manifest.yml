@@ -5,10 +5,13 @@ applications:
   memory: 512M
   disk_quota: 1G
   instances: 1
+  path: ${project.artifactId}-${project.version}.jar
+  buildpack: https://github.com/cloudfoundry/java-buildpack
 services:
   - eureka-service
 env:
   JBP_CONFIG_OPEN_JDK_JRE: '[jre: {version: 1.8.0_+}, memory_calculator: {memory_heuristics: {heap: 85, stack: 10}}]'
-  CONFIG_SERVER_PASSWORD: changeit
-  CONFIG_SERVER_GIT: https://github.com/andrewkandzuba/openexchange-configuration.git
-  EUREKA_SERVER_URL: http://registry-${parsedVersion.majorVersion}-${parsedVersion.minorVersion}-${parsedVersion.incrementalVersion}.cfapps.io
+  #CONFIG_SERVER_PASSWORD: changeit
+  #CONFIG_SERVER_GIT: https://github.com/andrewkandzuba/openexchange-configuration.git
+  spring.cloud.config.server.git.uri: https://github.com/andrewkandzuba/openexchange-configuration.git
+  security.user.password: changeit

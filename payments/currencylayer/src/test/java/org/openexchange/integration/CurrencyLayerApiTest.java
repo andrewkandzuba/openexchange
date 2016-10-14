@@ -19,9 +19,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -47,7 +45,9 @@ public class CurrencyLayerApiTest {
     public void testCurrencyList() throws Exception {
         Currencies currencies = new Currencies();
         currencies.setSuccess(true);
-        currencies.setCurrencies(Map.of("USD", "United States Dollar"));
+        Map<String, String> m = new HashMap<>();
+        m.put("USD", "United States Dollar");
+        currencies.setCurrencies(Collections.unmodifiableMap(m));
 
         when(restTemplate.getForEntity(Mockito.anyString(), Mockito.any(), Matchers.<Object>anyVararg())).thenReturn(new ResponseEntity<>(currencies, HttpStatus.OK));
 
@@ -63,7 +63,10 @@ public class CurrencyLayerApiTest {
         Quotes quotes = new Quotes();
         quotes.setSuccess(true);
         quotes.setSource("USD");
-        quotes.setQuotes(Map.of("USDUSD", 1.00, "USDEUR", 0.90));
+        Map<String, Double> m = new HashMap<>();
+        m.put("USDUSD", 1.00);
+        m.put("USDEUR", 0.90);
+        quotes.setQuotes(Collections.unmodifiableMap(m));
         List<String> params = Arrays.asList("USD", "EUR");
 
         when(restTemplate.getForEntity(Mockito.anyString(), Mockito.any(), Matchers.<Object>anyVararg())).thenReturn(new ResponseEntity<>(quotes, HttpStatus.OK));
