@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: sms-consumer
+    name: sms-producer
   cloud:
     config:
       fail-fast: true

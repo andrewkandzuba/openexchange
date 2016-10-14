@@ -11,7 +11,6 @@ Test service to verify concurrency aspects of JMS/JPA combination from the consu
 | Name | Default value | Description | 
 | --- | --- | --- |
 | server.port | 8084 | A local bind port |
-| jdk.launcher.addmods | | Include into JVM arguments if run on JDK9: java.xml.bind,java.annotations.common |
 | sms.outbound.queue.read.chunk.size | 100 | The most number of messages consumed ber a turn  |
 | spring.consumers.concurrency | The number of available processor's cores | The number of parallel consumers |
 
@@ -31,23 +30,17 @@ Local run VM parameters:
  -ea
  --add-modules
  java.xml.bind,java.annotations.common
- -Djdk.launcher.addmods=java.xml.bind,java.annotations.common
- -Dhttps.proxyHost=ee-mcagw1.ee.playtech.corp
- -Dhttps.proxyPort=8080
- -Dspring.cloud.config.server.git.uri=https://github.com/andrewkandzuba/openexchange-configuration.git
- -Dsecurity.user.password=changeit
  -Deureka.instance.nonSecurePort=8888
  -Deureka.instance.metadataMap.user=user
  -Deureka.instance.metadataMap.password=changeit
- -Dspring.datasource.url=jdbc:mysql://localhost/sms
- -Dspring.datasource.username=dev
- -Dspring.datasource.password=changeit
- -Dspring.datasource.driver-class-name=com.mysql.jdbc.Driver
+ -Dspring.cloud.config.label=1.0.5-SNAPSHOT
+ -Dspring.cloud.config.refresh.enabled=false
  -Dspring.jobs.jobs.restart.timeunit=SECONDS
  -Dspring.jobs.jobs.restart.interval=10
- -Dspring.cloud.config.refresh.enabled=false
+ -Dspring.rabbitmq.addresses=amqp://localhost:5672
  -Dspring.activemq.broker-url=tcp://localhost:61616
  -Dorg.apache.activemq.SERIALIZABLE_PACKAGES="*"`
+ 
 
 ## Cloudfoundry
 

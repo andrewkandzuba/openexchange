@@ -13,7 +13,6 @@ The implementation bases on *Spring Cloud Netflix Eureka* service registry.
 | Name | Default value | Description | 
 | --- | --- | --- |
 | server.port | 8761 | A local bind port |
-| jdk.launcher.addmods | | Include into JVM arguments if run on JDK9: java.xml.bind,java.annotations.common |
 
 # Bootstrap
 
@@ -30,5 +29,5 @@ Local run VM parameters example:
 ## Cloudfoundry
 
 `$ cf push -p target/manifest.yml`
-
+`$ cf cups eureka-service -p "{\"uri\":\"http://registry-${project.version}.cfapps.io\"}"`
      

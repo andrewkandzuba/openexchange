@@ -18,7 +18,6 @@ It also registers itself to the Eureka Service Registry to enable *Discovery Fir
 | eureka.instance.nonSecurePort | 8888 |  Local binding port |
 | https.proxyHost | | HTTP proxy host if enabled |
 | https.proxyPort | | HTTP proxy port if enabled |
-| jdk.launcher.addmods | | Include into JVM arguments if run on JDK9: java.xml.bind,java.annotations.common |
 
 # Bootstrap
 

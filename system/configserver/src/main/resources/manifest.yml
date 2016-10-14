@@ -11,7 +11,7 @@ services:
   - eureka-service
 env:
   JBP_CONFIG_OPEN_JDK_JRE: '[jre: {version: 1.8.0_+}, memory_calculator: {memory_heuristics: {heap: 85, stack: 10}}]'
-  #CONFIG_SERVER_PASSWORD: changeit
-  #CONFIG_SERVER_GIT: https://github.com/andrewkandzuba/openexchange-configuration.git
   spring.cloud.config.server.git.uri: https://github.com/andrewkandzuba/openexchange-configuration.git
   security.user.password: changeit
+  eureka.instance.metadataMap.user: user
+  eureka.instance.metadataMap.password: changeit
