@@ -27,9 +27,14 @@
             <artifactId>sms</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
+        <!-- dependency>
             <groupId>org.openexchange</groupId>
             <artifactId>activemq-sms-transport</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency -->
+        <dependency>
+            <groupId>org.openexchange</groupId>
+            <artifactId>rabbitmq-sms-transport</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

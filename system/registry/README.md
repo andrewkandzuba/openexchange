@@ -23,6 +23,10 @@ Run using *Maven spring-boot plugin*:
 
 `$mvn spring-boot:run`
 
+Local run VM parameters example:
+
+`java -server -ea  --add-modules java.xml.bind,java.annotations.common`
+
 ## Cloudfoundry
 
 `$ cf push -p target/manifest.yml`

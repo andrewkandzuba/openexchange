@@ -25,6 +25,30 @@ Run using *Maven spring-boot plugin*:
 
 `$mvn spring-boot:run`
 
+Local run VM parameters:
+
+`-server
+ -ea
+ --add-modules
+ java.xml.bind,java.annotations.common
+ -Djdk.launcher.addmods=java.xml.bind,java.annotations.common
+ -Dhttps.proxyHost=ee-mcagw1.ee.playtech.corp
+ -Dhttps.proxyPort=8080
+ -Dspring.cloud.config.server.git.uri=https://github.com/andrewkandzuba/openexchange-configuration.git
+ -Dsecurity.user.password=changeit
+ -Deureka.instance.nonSecurePort=8888
+ -Deureka.instance.metadataMap.user=user
+ -Deureka.instance.metadataMap.password=changeit
+ -Dspring.datasource.url=jdbc:mysql://localhost/sms
+ -Dspring.datasource.username=dev
+ -Dspring.datasource.password=changeit
+ -Dspring.datasource.driver-class-name=com.mysql.jdbc.Driver
+ -Dspring.jobs.jobs.restart.timeunit=SECONDS
+ -Dspring.jobs.jobs.restart.interval=10
+ -Dspring.cloud.config.refresh.enabled=false
+ -Dspring.activemq.broker-url=tcp://localhost:61616
+ -Dorg.apache.activemq.SERIALIZABLE_PACKAGES="*"`
+
 ## Cloudfoundry
 
 `$ cf push -p target/manifest.yml`

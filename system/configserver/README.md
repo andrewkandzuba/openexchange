@@ -28,6 +28,19 @@ Run using *Maven spring-boot plugin*:
 
 `$mvn spring-boot:run -Drun.jvmArguments='...'`
 
+Local run VM parameters:
+
+`-server
+ -ea
+ --add-modules java.xml.bind,java.annotations.common
+ -Dhttps.proxyHost=ee-mcagw1.ee.playtech.corp
+ -Dhttps.proxyPort=8080
+ -Dspring.cloud.config.server.git.uri=https://github.com/andrewkandzuba/openexchange-configuration.git
+ -Dsecurity.user.password=changeit
+ -Deureka.instance.nonSecurePort=8888
+ -Deureka.instance.metadataMap.user=user
+ -Deureka.instance.metadataMap.password=changeit`
+
 ## Cloudfoundry
 
 `$ cf push -p target/manifest.yml`
