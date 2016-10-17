@@ -30,17 +30,15 @@ Local run VM parameters:
  -ea
  --add-modules
  java.xml.bind,java.annotations.common
- -Deureka.instance.nonSecurePort=8888
- -Deureka.instance.metadataMap.user=user
- -Deureka.instance.metadataMap.password=changeit
- -Dspring.cloud.config.label=1.0.5-SNAPSHOT
- -Dspring.cloud.config.refresh.enabled=false
- -Dspring.jobs.jobs.restart.timeunit=SECONDS
- -Dspring.jobs.jobs.restart.interval=10
- -Dspring.rabbitmq.addresses=amqp://localhost:5672
+ -Dspring.cloud.config.label=...
+ -Dvcap.services.eureka-service.credentials.uri=...
+ -Dspring.rabbitmq.addresses=amqp://ymqcbabg:FNie0JFq6O5zUlKKtT7qG-HkRyT7XHCO@wildboar.rmq.cloudamqp.com/ymqcbabg
+ -Dspring.datasource.url=jdbc:mysql://us-cdbr-iron-east-04.cleardb.net/ad_79bf6586c0d1648
+ -Dspring.datasource.username=bed9dd9d6f797f
+ -Dspring.datasource.password=b7e5b5b4
+ -Dspring.datasource.tomcat.max-active=2
  -Dspring.activemq.broker-url=tcp://localhost:61616
  -Dorg.apache.activemq.SERIALIZABLE_PACKAGES="*"`
- 
 
 ## Cloudfoundry
 

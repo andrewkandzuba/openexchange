@@ -10,7 +10,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -36,7 +35,7 @@ public class JobsConfiguration {
         }
     }
 
-    @Transactional(noRollbackFor = Throwable.class, rollbackFor = SQLException.class)
+    @Transactional(rollbackFor = Throwable.class, timeout = 5)
     private void consume() {
         Collection<Sms> messages = smsService.receive(smsReadChunkSize);
         if (messages.isEmpty()) {
