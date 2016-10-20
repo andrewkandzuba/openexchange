@@ -1,8 +1,10 @@
 package org.openexchange.jms;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openexchange.pojos.Quote;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jms.JmsException;
@@ -12,6 +14,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JmsTransactionalSendTest.class)
@@ -41,5 +46,25 @@ public class JmsTransactionalSendTest extends JmsUtilsTest {
         Assert.assertNotNull(jmsTemplate.receive(TEST_JMS_QUEUE));
         Assert.assertNotNull(jmsTemplate.receive(TEST_JMS_QUEUE));
         Assert.assertNull(jmsTemplate.receive(TEST_JMS_QUEUE));
+    }
+
+
+    @Test
+    public void dateConversionTests() throws Exception {
+        Date d = DateUtils.parseDate("2011-12-03 10:15:30", "yyyy-MM-dd hh:mm:ss");
+
+        Quote s = new Quote();
+        s.setSource("USD");
+        s.setTarget("EUR");
+        s.setQuote(0.9d);
+        s.setTimestamp(d);
+
+        jmsTemplate.convertAndSend(TEST_JMS_QUEUE, s);
+
+        Quote r = (Quote) jmsTemplate.receiveAndConvert(TEST_JMS_QUEUE);
+        Assert.assertEquals(r.getSource(), "USD");
+        Assert.assertEquals(r.getTarget(), "EUR");
+        Assert.assertTrue(BigDecimal.valueOf(s.getQuote()).compareTo(BigDecimal.valueOf(0.9d)) == 0);
+        Assert.assertEquals(r.getTimestamp(), d);
     }
 }

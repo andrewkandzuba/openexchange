@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +34,7 @@ public class CurrencylayerConfiguration {
         try {
             List<String> currencyCodes = Arrays.asList(currencyLayerService.all().getCurrencies().keySet().stream().toArray(String[]::new));
             Quotes response = currencyLayerService.live(currencyCodes);
-            Date timestamp = new Date(response.getTimestamp());
+            Date timestamp = Date.from(Instant.now());
             List<Quote> quotes = new CopyOnWriteArrayList<>();
             response.getQuotes()
                     .entrySet()

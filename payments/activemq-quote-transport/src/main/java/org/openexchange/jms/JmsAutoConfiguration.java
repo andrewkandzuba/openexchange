@@ -59,8 +59,22 @@ public class JmsAutoConfiguration {
 
             @Override
             @Transactional(rollbackFor = Throwable.class)
-            public void write(Collection<? extends Quote> list) {
+            public void write(Collection<Quote> list) {
                 list.forEach(o -> jmsTemplate.convertAndSend(QUOTES_QUEUE, o));
+            }
+
+            @Override
+            @Transactional(rollbackFor = Throwable.class)
+            public Collection<Quote> read(int number) {
+                Collection<Quote> messages = new HashSet<>();
+                while (number-- > 0) {
+                    Quote quote = (Quote) jmsTemplate.receiveAndConvert(QUOTES_QUEUE);
+                    if (quote == null) {
+                        break;
+                    }
+                    messages.add(quote);
+                }
+                return messages;
             }
         };
     }
