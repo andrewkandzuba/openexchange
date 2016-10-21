@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>org.openexchange</groupId>
-            <artifactId>activemq-quote-transport</artifactId>
+            <artifactId>rabbitmq-quote-transport</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

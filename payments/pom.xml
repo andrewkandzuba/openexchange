@@ -18,7 +18,7 @@
 
     <modules>
         <module>activemq-quote-transport</module>
-        <!-- module>rabbitmq-quote-transport</module -->
+        <module>rabbitmq-quote-transport</module>
         <module>cashier</module>
         <module>currency</module>
         <module>currencylayer</module>
