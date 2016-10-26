@@ -5,7 +5,11 @@ applications:
   memory: 512M
   disk_quota: 1G
   instances: 1
+  path: ${project.artifactId}-${project.version}.jar
+  buildpack: https://github.com/cloudfoundry/java-buildpack
 services:
   - eureka-service
+  - rabbitmq-cloud-amqp
 env:
   JBP_CONFIG_OPEN_JDK_JRE: '[jre: {version: 1.8.0_+}, memory_calculator: {memory_heuristics: {heap: 85, stack: 10}}]'
+  spring.cloud.config.label: ${project.version}

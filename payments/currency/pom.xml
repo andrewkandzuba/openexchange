@@ -46,6 +46,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -65,6 +69,7 @@
                 <includes>
                     <include>**/bootstrap.yml</include>
                     <include>**/logback-spring.xml</include>
+                    <include>**/db/migration/V1_2__init.sql</include>
                 </includes>
             </resource>
             <resource>

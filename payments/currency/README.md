@@ -10,7 +10,7 @@ The microservice facilities currencies details and exchange quotes statistics.
 | --- | :--- | --- | :---: | :---: |
 | GET | /currencies/ | Lists all registered currencies | | × |
 | GET | /currencies/{code} | Get details of a certain currency | | × |
-| GET | /rates/{source}/{target} | Get an exchange's quote of a source to target currencies  |  | × |
+| GET | /quotes/{source}/{target} | Get an exchange's quote of a source to target currencies  |  | × |
 
 # Configuration
 

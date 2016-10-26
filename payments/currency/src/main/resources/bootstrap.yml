@@ -9,6 +9,10 @@ spring:
       fail-fast: true
       discovery:
         enabled: true
+  jpa:
+    show_sql: false
+    hibernate:
+      ddl-auto: validate
 
 eureka:
   instance:

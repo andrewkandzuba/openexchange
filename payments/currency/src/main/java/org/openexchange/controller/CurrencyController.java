@@ -33,7 +33,7 @@ public class CurrencyController {
         return currency;
     }
 
-    @RequestMapping(path = "quotes/{sourceCode}/{targetCode}", method = RequestMethod.GET)
+    @RequestMapping(path = "/quotes/{sourceCode}/{targetCode}", method = RequestMethod.GET)
     public BigDecimal findQuote(@PathVariable String sourceCode, @PathVariable String targetCode){
         Currency source = currencyService.findByCode(sourceCode);
         Assert.notNull(source, "The source currency does not exist");
