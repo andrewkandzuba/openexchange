@@ -6,11 +6,9 @@ The library discovers all visible methods annotated with @Job in @Configuration 
 
 # Configuration
 
-## Environment variables
-
 | Name | Default value | Description | 
-| --- | --- | --- |
-| spring.batch.job.restart.interval | 100000 | An interval between the successful completion and the next launch of the certain batch job's execution |
-| spring.batch.job.restart.timeunit | MINUTES | An interval time units |
+|---|:---:|---|
+| spring.jobs.jobs.restart.interval |1| An interval between the successful completion and the next launch of a certain job's instance execution |
+| spring.jobs.jobs.restart.timeunit:MINUTES | MINUTES | An interval's time units |
 
      

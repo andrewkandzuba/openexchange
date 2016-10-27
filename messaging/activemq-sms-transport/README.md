@@ -1,17 +1,3 @@
-# Overview
+# ActiveMQ Auto Configuration Bundle
 
-**JMS SMS Auto Configuration Library**
-
-The facilitation library of commons beans, configurations and settings required for messages exchange over JMS
-
-# Supported JMS implementations
-- ActiveMQ
-
-# Configuration
-
-Environment variables:
-
-| Name | Default value | Description | 
-| --- | --- | --- |
-| spring.jms.broker.receive.timeout.timeUnit | SECONDS | |
-| spring.jms.broker.receive.timeout.interval| | |
+The auxiliary library implements **_SMS Protocol Bundle_** based on ActiveMQ. 

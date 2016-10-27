@@ -1,29 +1,13 @@
-# Overview
+# Currencylayer Integration Service
 
-**Currencylayer Service**
+The microservice implements integration against [Currencylayer](https://currencylayer.com) currencies exchange quotes provider followed by pushing of received data into the channel's implementation of **_Quote Protocol Bundle_** 
 
-The service is responsible for delivery quotes updates to JMS queue
-
-# Configuration
-
-## Environment variables
+## Properties 
 
 | Name | Default value | Description | 
 | --- | --- | --- |
 | server.port | 8083 | A local bind port |
 | currencylayer.api.accesskey | | Currencylayer provider's accesskey |
 | currencylayer.api.endpoint | | Currencylayer provider's URL |
-    
-# Bootstrap
-
-## Local
-
-Run using *Maven spring-boot plugin*:
-
-`$mvn spring-boot:run`
-
-## Cloudfoundry
-
-`$ cf push -p target/manifest.yml`
 
      

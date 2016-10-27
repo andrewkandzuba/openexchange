@@ -1,7 +1,5 @@
-# Overview
+# SMS Protocol Bundle
 
-**SMS service declarations library**
-
-The library defines the generic interfaces and protocol for sms communication. 
+The auxiliary library defines protocol and interfaces for sms exchange.
 
      

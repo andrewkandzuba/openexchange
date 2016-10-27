@@ -1,7 +1,5 @@
-# Overview
+# Quote Protocol Bundle
 
-**SMS service declarations library**
-
-The library defines the generic interfaces and protocol for quotes communication. 
+The auxiliary library defines protocol and interfaces for currencies quotes exchange.
 
      
