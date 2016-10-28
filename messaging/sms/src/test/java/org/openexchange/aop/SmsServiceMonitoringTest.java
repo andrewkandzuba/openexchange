@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.openexchange.pojos.Sms;
 import org.openexchange.sms.SmsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -66,5 +67,9 @@ public class SmsServiceMonitoringTest {
                                 .withText("Test")
                                 .withReceiveTime(Date.from(Instant.now()))));
         smsService.receive(1);
+    }
+
+    static class BeanAopConfiguration {
+
     }
 }

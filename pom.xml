@@ -18,6 +18,18 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- dependencies -->
+        <spring-cloud-dependencies.version>Brixton.SR6</spring-cloud-dependencies.version>
+        <commons-lang3.version>3.4</commons-lang3.version>
+        <jettison.version>1.2</jettison.version>
+        <jms.vesion>1.1</jms.vesion>
+        <activemq-junit.version>5.14.0</activemq-junit.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+
+        <!-- plugins -->
+        <jsonschema2pojo-maven-plugin.version>0.4.27</jsonschema2pojo-maven-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -25,29 +37,29 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Brixton.SR4</version>
+                <version>${spring-cloud-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.4</version>
+                <version>${commons-lang3.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
-                <version>1.2</version>
+                <version>${jettison.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.jms</groupId>
                 <artifactId>jms</artifactId>
-                <version>1.1</version>
+                <version>${jms.vesion}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.activemq.tooling</groupId>
                 <artifactId>activemq-junit</artifactId>
-                <version>5.14.0</version>
+                <version>${activemq-junit.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -58,6 +70,10 @@
         <module>payments</module>
         <module>messaging</module>
     </modules>
+
+    <scm>
+        <developerConnection>scm:git:[fetch=]https://github.com/andrewkandzuba/openexchange.git[push=]git@github.com:andrewkandzuba/openexchange.git</developerConnection>
+    </scm>
 
     <build>
         <pluginManagement>
@@ -111,7 +127,7 @@
                 <plugin>
                     <groupId>org.jsonschema2pojo</groupId>
                     <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-                    <version>0.4.26</version>
+                    <version>${jsonschema2pojo-maven-plugin.version}</version>
                     <executions>
                         <execution>
                             <phase>generate-sources</phase>
@@ -129,6 +145,11 @@
                         <serializable>true</serializable>
                         <generateBuilders>true</generateBuilders>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -168,7 +189,7 @@
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-jar-plugin</artifactId>
-                            <version>3.0.2</version>
+                            <version>${maven-jar-plugin.version}</version>
                         </plugin>
                     </plugins>
                 </pluginManagement>
