@@ -72,7 +72,7 @@
     </modules>
 
     <scm>
-        <developerConnection>scm:git:[fetch=]https://github.com/andrewkandzuba/openexchange.git[push=]git@github.com:andrewkandzuba/openexchange.git</developerConnection>
+        <developerConnection>scm:git:[fetch=]https://github.com/andrewkandzuba/openexchange.git[push=]andrewkandzuba@github.com:andrewkandzuba/openexchange.git</developerConnection>
     </scm>
 
     <build>
