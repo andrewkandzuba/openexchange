@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.openexchange</groupId>
-        <artifactId>messaging</artifactId>
+        <artifactId>example</artifactId>
         <version>1.0.6-SNAPSHOT</version>
     </parent>
 
-    <artifactId>sms-consumer</artifactId>
+    <artifactId>refreshscopeclient</artifactId>
     <version>1.0.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -20,44 +22,6 @@
             <artifactId>configclient</artifactId>
             <version>1.0.6-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.openexchange</groupId>
-            <artifactId>batch</artifactId>
-            <version>1.0.6-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openexchange</groupId>
-            <artifactId>sms</artifactId>
-            <version>1.0.6-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openexchange</groupId>
-            <artifactId>rabbitmq-sms-transport</artifactId>
-            <version>1.0.6-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -68,7 +32,6 @@
                 <includes>
                     <include>**/bootstrap.yml</include>
                     <include>**/logback-spring.xml</include>
-                    <include>**/db/migration/V1_2__init.sql</include>
                 </includes>
             </resource>
             <resource>
@@ -103,4 +66,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

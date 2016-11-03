@@ -22,6 +22,11 @@
         </dependency>
         <dependency>
             <groupId>org.openexchange</groupId>
+            <artifactId>batch</artifactId>
+            <version>1.0.6-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openexchange</groupId>
             <artifactId>sms</artifactId>
             <version>1.0.6-SNAPSHOT</version>
         </dependency>
@@ -29,10 +34,6 @@
             <groupId>org.openexchange</groupId>
             <artifactId>rabbitmq-sms-transport</artifactId>
             <version>1.0.6-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

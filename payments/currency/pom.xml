@@ -22,6 +22,11 @@
         </dependency>
         <dependency>
             <groupId>org.openexchange</groupId>
+            <artifactId>batch</artifactId>
+            <version>1.0.6-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openexchange</groupId>
             <artifactId>quote</artifactId>
             <version>1.0.6-SNAPSHOT</version>
         </dependency>
