@@ -30,6 +30,7 @@
         <!-- plugins -->
         <jsonschema2pojo-maven-plugin.version>0.4.27</jsonschema2pojo-maven-plugin.version>
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <docker-maven-plugin.version>0.4.13</docker-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -162,6 +163,27 @@
                         <altDeploymentRepository>
                             release-repo::default::file:/cygdrive/c/Users/andriyka/.m2/repository/
                         </altDeploymentRepository>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${docker-maven-plugin.version}</version>
+                    <configuration>
+                        <imageName>${project.artifactId}</imageName>
+                        <imageTags>
+                            <imageTag>${project.version}</imageTag>
+                        </imageTags>
+                        <baseImage>java</baseImage>
+                        <entryPoint>["java", "-jar", "/${project.artifactId}-${project.version}.jar"]</entryPoint>
+                        <!-- copy the service's jar file from target into the root directory of the image -->
+                        <resources>
+                            <resource>
+                                <targetPath>/</targetPath>
+                                <directory>${project.build.directory}</directory>
+                                <include>${project.artifactId}-${project.version}.jar</include>
+                            </resource>
+                        </resources>
                     </configuration>
                 </plugin>
             </plugins>
