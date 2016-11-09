@@ -16,7 +16,6 @@
 
     <modules>
         <module>batch</module>
-        <module>configclient</module>
         <module>registry</module>
         <module>configserver</module>
     </modules>
