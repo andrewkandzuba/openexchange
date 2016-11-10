@@ -71,6 +71,7 @@
         <module>payments</module>
         <module>messaging</module>
         <module>examples</module>
+        <module>integration-tests</module>
     </modules>
 
     <scm>
@@ -164,44 +165,6 @@
                             release-repo::default::file:/cygdrive/c/Users/andriyka/.m2/repository/
                         </altDeploymentRepository>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>${fabric8.docker-maven-plugin.version}</version>
-                    <configuration>
-                        <verbose>true</verbose>
-                        <images>
-                            <image>
-                                <alias>${project.artifactId}</alias>
-                                <name>%g/${project.artifactId}</name>
-                                <build>
-                                    <dockerFileDir>${project.build.directory}</dockerFileDir>
-                                    <tags>
-                                        <tag>latest</tag>
-                                        <tag>${project.version}</tag>
-                                    </tags>
-                                </build>
-                            </image>
-                        </images>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>start</id>
-                            <phase>pre-integration-test</phase>
-                            <goals>
-                                <goal>build</goal>
-                                <goal>start</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>stop</id>
-                            <phase>post-integration-test</phase>
-                            <goals>
-                                <goal>stop</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -42,8 +42,6 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/manifest.yml</include>
-                    <include>**/Dockerfile</include>
-                    <include>**/.maven-dockerignore</include>
                 </includes>
                 <targetPath>${project.build.directory}</targetPath>
             </resource>
@@ -69,30 +67,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-            </plugin>
-            <!-- plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>${docker-maven-plugin.version}</version>
-                <configuration>
-                    <imageName>${project.artifactId}</imageName>
-                    <imageTags>
-                        <imageTag>${project.version}</imageTag>
-                    </imageTags>
-                    <baseImage>java</baseImage>
-                    <entryPoint>["java", "-jar", "/${project.artifactId}-${project.version}.jar"]</entryPoint>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.artifactId}-${project.version}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin -->
         </plugins>
     </build>
 

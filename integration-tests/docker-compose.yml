@@ -1,0 +1,9 @@
+version: '2.0'
+services:
+  configserver:
+    image: openexchange/configserver:latest
+    depends_on:
+      - "registry"
+    entrypoint: ./maven/wait-for-it.sh 192.168.99.100:8761 -s -t 5
+  registry:
+    image: openexchange/registry:latest
