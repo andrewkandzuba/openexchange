@@ -12,6 +12,7 @@ import org.openexchange.pojos.Quotes;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.bus.BusAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CurrencyLayerApiTest.class)
-@SpringBootApplication
+@SpringBootApplication(exclude = BusAutoConfiguration.class)
 @ComponentScan(basePackages = "org.openexchange.integration")
 @TestPropertySource(locations = "classpath:test.properties")
 public class CurrencyLayerApiTest {

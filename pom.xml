@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.1.RELEASE</version>
+        <version>1.4.2.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- dependencies -->
-        <spring-cloud-dependencies.version>Brixton.SR6</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>Camden.SR2</spring-cloud-dependencies.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <jettison.version>1.2</jettison.version>
         <jms.vesion>1.1</jms.vesion>

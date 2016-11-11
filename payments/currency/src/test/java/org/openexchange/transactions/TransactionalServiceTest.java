@@ -3,25 +3,34 @@ package org.openexchange.transactions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openexchange.CurrencyApplication;
 import org.openexchange.repository.CurrencyRepository;
 import org.openexchange.repository.RateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
+
+//org.openexchange.repository
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {CurrencyApplication.class})
+@DataJpaTest
+@ComponentScan(basePackages = {
+        "org.openexchange.repository",
+        "org.openexchange.transactions"
+})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
 @TestPropertySource(locations = "classpath:test.properties")
 public class TransactionalServiceTest {
-    @Autowired
+    @Inject
     private CurrencyRepository currencyRepository;
-    @Autowired
+    @Inject
     private RateRepository rateRepository;
-    @Autowired
+    @Inject
     private TransactionalService transactionalService;
 
     @Test
