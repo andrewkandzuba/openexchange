@@ -96,8 +96,6 @@
                                     <exec>
                                         <arg>java</arg>
                                         <arg>-Djava.security.egd=file:/dev/urandom</arg>
-                                        <arg>-Dhttps.proxyHost=ee-mcagw1.ee.playtech.corp</arg>
-                                        <arg>-Dhttps.proxyPort=8080</arg>
                                         <arg>-Dspring.cloud.config.server.git.uri=https://github.com/andrewkandzuba/openexchange-configuration.git</arg>
                                         <arg>-Deureka.instance.nonSecurePort=${configuration.server.port}</arg>
                                         <arg>-Dsecurity.user.password=changeit</arg>
