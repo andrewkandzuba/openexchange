@@ -32,6 +32,9 @@
     <properties>
         <registry.server.port>8761</registry.server.port>
         <configuration.server.port>8888</configuration.server.port>
+        <rabbitmq.port>5672</rabbitmq.port>
+        <rabbitmq.management.port>15672</rabbitmq.management.port>
+        <docker.host.address>192.168.99.100</docker.host.address>
     </properties>
 
     <build>
@@ -43,6 +46,19 @@
                 <configuration>
                     <verbose>true</verbose>
                     <images>
+                        <image>
+                            <alias>rabbitmq</alias>
+                            <name>rabbitmq:3-management</name>
+                            <build>
+                                <from>rabbitmq:3-management</from>
+                            </build>
+                            <run>
+                                <ports>
+                                    <port>${rabbitmq.port}:${rabbitmq.port}</port>
+                                    <port>${rabbitmq.management.port}:${rabbitmq.management.port}</port>
+                                </ports>
+                            </run>
+                        </image>
                         <image>
                             <alias>registry</alias>
                             <name>%g/registry:${project.version}</name>
@@ -81,6 +97,19 @@
                                 <ports>
                                     <port>${registry.server.port}:${registry.server.port}</port>
                                 </ports>
+                                <dependsOn>
+                                    <dependsOn>%g/configserver:${project.version}</dependsOn>
+                                </dependsOn>
+                                <wait>
+                                    <http>
+                                        <url>http://${docker.host.address}:${rabbitmq.management.port}</url>
+                                        <method>GET</method>
+                                        <status>200..399</status>
+                                    </http>
+                                    <time>60000</time>
+                                    <kill>1000</kill>
+                                    <shutdown>500</shutdown>
+                                </wait>
                             </run>
                         </image>
                         <image>
@@ -97,11 +126,14 @@
                                         <arg>java</arg>
                                         <arg>-Djava.security.egd=file:/dev/urandom</arg>
                                         <arg>-Dspring.cloud.config.server.git.uri=https://github.com/andrewkandzuba/openexchange-configuration.git</arg>
-                                        <arg>-Deureka.instance.nonSecurePort=${configuration.server.port}</arg>
                                         <arg>-Dsecurity.user.password=changeit</arg>
+                                        <arg>-Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port}</arg>
+                                        <arg>-Dspring.rabbitmq.host=${docker.host.address}</arg>
                                         <arg>-Deureka.instance.metadataMap.user=user</arg>
                                         <arg>-Deureka.instance.metadataMap.password=changeit</arg>
-                                        <arg>-Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port}</arg>
+                                        <arg>-Deureka.instance.nonSecurePort=${configuration.server.port}</arg>
+                                        <arg>-Dhttps.proxyHost=ee-mcagw1.ee.playtech.corp</arg>
+                                        <arg>-Dhttps.proxyPort=8080</arg>
                                         <arg>-jar</arg>
                                         <arg>/maven/app.jar</arg>
                                     </exec>
