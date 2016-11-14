@@ -132,8 +132,8 @@
                                         <arg>-Deureka.instance.metadataMap.user=user</arg>
                                         <arg>-Deureka.instance.metadataMap.password=changeit</arg>
                                         <arg>-Deureka.instance.nonSecurePort=${configuration.server.port}</arg>
-                                        <arg>-Dhttps.proxyHost=ee-mcagw1.ee.playtech.corp</arg>
-                                        <arg>-Dhttps.proxyPort=8080</arg>
+                                        
+                                        
                                         <arg>-jar</arg>
                                         <arg>/maven/app.jar</arg>
                                     </exec>
