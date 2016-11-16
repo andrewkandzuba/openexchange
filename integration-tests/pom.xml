@@ -38,8 +38,8 @@
         </configuration.server.git.repo>
         <rabbitmq.port>5672</rabbitmq.port>
         <rabbitmq.management.port>15672</rabbitmq.management.port>
-        <HTTPS_PROXY_HOST/>
-        <HTTPS_PROXY_PORT/>
+        <HTTPS_PROXY_HOST>-Dnothing=</HTTPS_PROXY_HOST>
+        <HTTPS_PROXY_PORT>-Dnothing=</HTTPS_PROXY_PORT>
         <mysql.user.name>dev</mysql.user.name>
         <mysql.user.password>changeit</mysql.user.password>
         <mysql.rootuser.password>root-changeit</mysql.rootuser.password>
