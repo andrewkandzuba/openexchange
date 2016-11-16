@@ -32,6 +32,10 @@
     <properties>
         <registry.server.port>8761</registry.server.port>
         <configuration.server.port>8888</configuration.server.port>
+        <configuration.server.user>user</configuration.server.user>
+        <configuration.server.password>changeit</configuration.server.password>
+        <configuration.server.git.repo>https://github.com/andrewkandzuba/openexchange-configuration.git
+        </configuration.server.git.repo>
         <rabbitmq.port>5672</rabbitmq.port>
         <rabbitmq.management.port>15672</rabbitmq.management.port>
         <docker.host.address>192.168.99.100</docker.host.address>
@@ -57,6 +61,10 @@
                                     <port>${rabbitmq.port}:${rabbitmq.port}</port>
                                     <port>${rabbitmq.management.port}:${rabbitmq.management.port}</port>
                                 </ports>
+                                <dns>
+                                    <host>localhost</host>
+                                </dns>
+                                <hostname>localhost</hostname>
                             </run>
                         </image>
                         <image>
@@ -71,14 +79,6 @@
                                 <volumes>
                                     <volume>/tmp</volume>
                                 </volumes>
-                                <entryPoint>
-                                    <exec>
-                                        <arg>java</arg>
-                                        <arg>-Djava.security.egd=file:/dev/urandom</arg>
-                                        <arg>-jar</arg>
-                                        <arg>/maven/app.jar</arg>
-                                    </exec>
-                                </entryPoint>
                                 <assembly>
                                     <inline>
                                         <dependencySets>
@@ -97,8 +97,20 @@
                                 <ports>
                                     <port>${registry.server.port}:${registry.server.port}</port>
                                 </ports>
+                                <dns>
+                                    <host>localhost</host>
+                                </dns>
+                                <hostname>localhost</hostname>
+                                <cmd>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-Djava.security.egd=file:/dev/urandom</arg>
+                                        <arg>-jar</arg>
+                                        <arg>/maven/app.jar</arg>
+                                    </exec>
+                                </cmd>
                                 <dependsOn>
-                                    <dependsOn>%g/configserver:${project.version}</dependsOn>
+                                    <dependsOn>rabbitmq:3-management</dependsOn>
                                 </dependsOn>
                                 <wait>
                                     <http>
@@ -121,23 +133,6 @@
                                     <tag>${project.version}</tag>
                                 </tags>
                                 <from>openjdk:8</from>
-                                <entryPoint>
-                                    <exec>
-                                        <arg>java</arg>
-                                        <arg>-Djava.security.egd=file:/dev/urandom</arg>
-                                        <arg>-Dspring.cloud.config.server.git.uri=https://github.com/andrewkandzuba/openexchange-configuration.git</arg>
-                                        <arg>-Dsecurity.user.password=changeit</arg>
-                                        <arg>-Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port}</arg>
-                                        <arg>-Dspring.rabbitmq.host=${docker.host.address}</arg>
-                                        <arg>-Deureka.instance.metadataMap.user=user</arg>
-                                        <arg>-Deureka.instance.metadataMap.password=changeit</arg>
-                                        <arg>-Deureka.instance.nonSecurePort=${configuration.server.port}</arg>
-                                        
-                                        
-                                        <arg>-jar</arg>
-                                        <arg>/maven/app.jar</arg>
-                                    </exec>
-                                </entryPoint>
                                 <assembly>
                                     <mode>tgz</mode>
                                     <permissions>ignore</permissions>
@@ -151,20 +146,35 @@
                                                 <outputFileNameMapping>app.jar</outputFileNameMapping>
                                             </dependencySet>
                                         </dependencySets>
-                                        <fileSets>
-                                            <fileSet>
-                                                <directory>${project.build.scriptSourceDirectory}</directory>
-                                                <outputDirectory>.</outputDirectory>
-                                                <includes>
-                                                    <include>*.sh</include>
-                                                </includes>
-                                                <fileMode>755</fileMode>
-                                            </fileSet>
-                                        </fileSets>
                                     </inline>
                                 </assembly>
                             </build>
                             <run>
+                                <cmd>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-Djava.security.egd=file:/dev/urandom</arg>
+
+                                        <arg>-Dhttps.proxyHost=ee-mcagw1.ee.playtech.corp</arg>
+                                        <arg>-Dhttps.proxyPort=8080</arg>
+
+                                        <arg>-Dspring.rabbitmq.host=${docker.host.address}</arg>
+                                        <arg>-Dspring.cloud.config.server.git.uri=${configuration.server.git.repo}</arg>
+                                        <arg>-Dsecurity.user.password=${configuration.server.password}</arg>
+
+                                        <arg>
+                                            -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port}
+                                        </arg>
+                                        <arg>-Deureka.instance.hostname=${docker.host.address}</arg>
+                                        <arg>-Deureka.instance.nonSecurePort=${configuration.server.port}</arg>
+                                        <arg>-Deureka.instance.metadataMap.user=${configuration.server.user}</arg>
+                                        <arg>-Deureka.instance.metadataMap.password=${configuration.server.password}
+                                        </arg>
+
+                                        <arg>-jar</arg>
+                                        <arg>/maven/app.jar</arg>
+                                    </exec>
+                                </cmd>
                                 <ports>
                                     <port>${configuration.server.port}:${configuration.server.port}</port>
                                 </ports>
