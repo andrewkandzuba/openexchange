@@ -38,7 +38,14 @@
         </configuration.server.git.repo>
         <rabbitmq.port>5672</rabbitmq.port>
         <rabbitmq.management.port>15672</rabbitmq.management.port>
+        <HTTPS_PROXY_HOST/>
+        <HTTPS_PROXY_PORT/>
+        <mysql.user.name>dev</mysql.user.name>
+        <mysql.user.password>changeit</mysql.user.password>
+        <mysql.rootuser.password>root-changeit</mysql.rootuser.password>
+        <mysql.port>3306</mysql.port>
         <docker.host.address>192.168.99.100</docker.host.address>
+        <docker.wait.timeout>60000</docker.wait.timeout>
     </properties>
 
     <build>
@@ -51,6 +58,51 @@
                     <verbose>true</verbose>
                     <images>
                         <image>
+                            <alias>mysql</alias>
+                            <name>%g/mysql:${project.version}</name>
+                            <build>
+                                <from>mysql:latest</from>
+                                <assembly>
+                                    <mode>tgz</mode>
+                                    <permissions>ignore</permissions>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.build.scriptSourceDirectory}</directory>
+                                                <outputDirectory>docker-entrypoint-initdb.d</outputDirectory>
+                                                <includes>
+                                                    <include>init_db.sh</include>
+                                                    <include>init_db.sql</include>
+                                                </includes>
+                                                <fileMode>755</fileMode>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                            <run>
+                                <env>
+                                    <MYSQL_USER>${mysql.user.name}</MYSQL_USER>
+                                    <MYSQL_PASSWORD>${mysql.user.password}</MYSQL_PASSWORD>
+                                    <MYSQL_ROOT_PASSWORD>${mysql.rootuser.password}</MYSQL_ROOT_PASSWORD>
+                                </env>
+                                <wait>
+                                    <tcp>
+                                        <ports>
+                                            <port>${mysql.port}</port>
+                                        </ports>
+                                    </tcp>
+                                    <time>${docker.wait.timeout}</time>
+                                    <exec>
+                                        <postStart>/maven/docker-entrypoint-initdb.d/init_db.sh ${mysql.rootuser.password}</postStart>
+                                    </exec>
+                                </wait>
+                                <ports>
+                                    <port>+mysql.host:mysql.port:${mysql.port}</port>
+                                </ports>
+                            </run>
+                        </image>
+                        <image>
                             <alias>rabbitmq</alias>
                             <name>rabbitmq:3-management</name>
                             <build>
@@ -61,10 +113,6 @@
                                     <port>${rabbitmq.port}:${rabbitmq.port}</port>
                                     <port>${rabbitmq.management.port}:${rabbitmq.management.port}</port>
                                 </ports>
-                                <dns>
-                                    <host>localhost</host>
-                                </dns>
-                                <hostname>localhost</hostname>
                             </run>
                         </image>
                         <image>
@@ -97,14 +145,13 @@
                                 <ports>
                                     <port>${registry.server.port}:${registry.server.port}</port>
                                 </ports>
-                                <dns>
-                                    <host>localhost</host>
-                                </dns>
-                                <hostname>localhost</hostname>
                                 <cmd>
                                     <exec>
                                         <arg>java</arg>
                                         <arg>-Djava.security.egd=file:/dev/urandom</arg>
+                                        <arg>
+                                            -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port}
+                                        </arg>
                                         <arg>-jar</arg>
                                         <arg>/maven/app.jar</arg>
                                     </exec>
@@ -155,8 +202,8 @@
                                         <arg>java</arg>
                                         <arg>-Djava.security.egd=file:/dev/urandom</arg>
 
-                                        <arg>-Dhttps.proxyHost=ee-mcagw1.ee.playtech.corp</arg>
-                                        <arg>-Dhttps.proxyPort=8080</arg>
+                                        <arg>${HTTPS_PROXY_HOST}</arg>
+                                        <arg>${HTTPS_PROXY_PORT}</arg>
 
                                         <arg>-Dspring.rabbitmq.host=${docker.host.address}</arg>
                                         <arg>-Dspring.cloud.config.server.git.uri=${configuration.server.git.repo}</arg>
