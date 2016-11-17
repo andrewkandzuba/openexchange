@@ -53,7 +53,6 @@ public class JmsAutoConfiguration {
     public SmsService smsService(JmsTemplate jmsTemplate) {
         return new SmsService() {
             private final Logger logger = LoggerFactory.getLogger(SmsService.class);
-            private final String queueName = "sms.outbound.queue";
 
             @Override
             public Collection<Sms> receive(int number) {
