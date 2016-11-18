@@ -27,6 +27,16 @@
             <artifactId>configserver</artifactId>
             <version>1.0.6-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.openexchange</groupId>
+            <artifactId>sms-producer</artifactId>
+            <version>1.0.6-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openexchange</groupId>
+            <artifactId>sms-consumer</artifactId>
+            <version>1.0.6-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -34,7 +44,8 @@
         <configuration.server.port>8888</configuration.server.port>
         <configuration.server.user>user</configuration.server.user>
         <configuration.server.password>changeit</configuration.server.password>
-        <configuration.server.git.repo>https://github.com/andrewkandzuba/openexchange-configuration.git</configuration.server.git.repo>
+        <configuration.server.git.repo>https://github.com/andrewkandzuba/openexchange-configuration.git
+        </configuration.server.git.repo>
         <rabbitmq.port>5672</rabbitmq.port>
         <rabbitmq.management.port>15672</rabbitmq.management.port>
         <mysql.user.name>dev</mysql.user.name>
@@ -43,6 +54,7 @@
         <mysql.port>3306</mysql.port>
         <docker.host.address>192.168.99.100</docker.host.address>
         <docker.wait.timeout>60000</docker.wait.timeout>
+        <sms-producer.server.port>8085</sms-producer.server.port>
     </properties>
 
     <build>
@@ -91,7 +103,9 @@
                                     </tcp>
                                     <time>${docker.wait.timeout}</time>
                                     <exec>
-                                        <postStart>/maven/docker-entrypoint-initdb.d/init_db.sh ${mysql.rootuser.password}</postStart>
+                                        <postStart>/maven/docker-entrypoint-initdb.d/init_db.sh
+                                            ${mysql.rootuser.password}
+                                        </postStart>
                                     </exec>
                                 </wait>
                                 <ports>
@@ -131,9 +145,6 @@
                                     <tag>${project.version}</tag>
                                 </tags>
                                 <from>openjdk:8</from>
-                                <volumes>
-                                    <volume>/tmp</volume>
-                                </volumes>
                                 <assembly>
                                     <inline>
                                         <dependencySets>
@@ -147,20 +158,19 @@
                                         </dependencySets>
                                     </inline>
                                 </assembly>
+                                <entryPoint>
+                                    <shell>java -server -ea \
+                                        -XX:+AggressiveOpts -Xms512M -Xmx2G \
+                                        -Djava.security.egd=file:/dev/urandom \
+                                        -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port} \
+                                        -jar /maven/app.jar
+                                    </shell>
+                                </entryPoint>
                             </build>
                             <run>
                                 <ports>
                                     <port>${registry.server.port}:${registry.server.port}</port>
                                 </ports>
-                                <cmd>
-                                    <exec>
-                                        <arg>java</arg>
-                                        <arg>-Djava.security.egd=file:/dev/urandom</arg>
-                                        <arg>-Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port}</arg>
-                                        <arg>-jar</arg>
-                                        <arg>/maven/app.jar</arg>
-                                    </exec>
-                                </cmd>
                                 <dependsOn>
                                     <dependsOn>rabbitmq:3-management</dependsOn>
                                 </dependsOn>
@@ -201,33 +211,21 @@
                                     </inline>
                                 </assembly>
                                 <entryPoint>
-                                    <shell>java ${env.JAVA_OPTS} -Djava.security.egd=file:/dev/urandom -Dspring.rabbitmq.host=${docker.host.address} -Dspring.cloud.config.server.git.uri=${configuration.server.git.repo} -Dsecurity.user.password=${configuration.server.password} -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port} -Deureka.instance.hostname=${docker.host.address} -Deureka.instance.nonSecurePort=${configuration.server.port} -Deureka.instance.metadataMap.user=${configuration.server.user} -Deureka.instance.metadataMap.password=${configuration.server.password} -jar /maven/app.jar</shell>
+                                    <shell>java ${env.JAVA_OPTS} -server -ea -XX:+AggressiveOpts -Xms512M -Xmx2G \
+                                        -Djava.security.egd=file:/dev/urandom \
+                                        -Dspring.rabbitmq.host=${docker.host.address} \
+                                        -Dspring.cloud.config.server.git.uri=${configuration.server.git.repo} \
+                                        -Dsecurity.user.password=${configuration.server.password} \
+                                        -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port} \
+                                        -Deureka.instance.hostname=${docker.host.address} \
+                                        -Deureka.instance.nonSecurePort=${configuration.server.port} \
+                                        -Deureka.instance.metadataMap.user=${configuration.server.user} \
+                                        -Deureka.instance.metadataMap.password=${configuration.server.password} -jar \
+                                        /maven/app.jar
+                                    </shell>
                                 </entryPoint>
                             </build>
                             <run>
-                                <!-- cmd>
-                                    <exec>
-                                        <arg>java</arg>
-                                        <arg>${env.JAVA_OPTS}</arg>
-                                        <arg>-Djava.security.egd=file:/dev/urandom</arg>
-
-                                        <arg>-Dspring.rabbitmq.host=${docker.host.address}</arg>
-                                        <arg>-Dspring.cloud.config.server.git.uri=${configuration.server.git.repo}</arg>
-                                        <arg>-Dsecurity.user.password=${configuration.server.password}</arg>
-
-                                        <arg>
-                                            -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port}
-                                        </arg>
-                                        <arg>-Deureka.instance.hostname=${docker.host.address}</arg>
-                                        <arg>-Deureka.instance.nonSecurePort=${configuration.server.port}</arg>
-                                        <arg>-Deureka.instance.metadataMap.user=${configuration.server.user}</arg>
-                                        <arg>-Deureka.instance.metadataMap.password=${configuration.server.password}
-                                        </arg>
-
-                                        <arg>-jar</arg>
-                                        <arg>/maven/app.jar</arg>
-                                    </exec>
-                                </cmd -->
                                 <ports>
                                     <port>${configuration.server.port}:${configuration.server.port}</port>
                                 </ports>
@@ -236,7 +234,68 @@
                                 </dependsOn>
                                 <wait>
                                     <http>
-                                        <url>http://${configuration.server.user}:${configuration.server.password}@${docker.host.address}:${configuration.server.port}/sms-producer/default</url>
+                                        <url>
+                                            http://${configuration.server.user}:${configuration.server.password}@${docker.host.address}:${configuration.server.port}/env
+                                        </url>
+                                        <method>GET</method>
+                                        <status>200..399</status>
+                                    </http>
+                                    <time>${docker.wait.timeout}</time>
+                                    <kill>1000</kill>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                            </run>
+                        </image>
+                        <image>
+                            <alias>sms-producer</alias>
+                            <name>%g/sms-producer:${project.version}</name>
+                            <build>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <from>openjdk:8</from>
+                                <assembly>
+                                    <mode>tgz</mode>
+                                    <permissions>ignore</permissions>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>${project.groupId}:sms-producer:jar:${project.version}
+                                                    </include>
+                                                </includes>
+                                                <outputFileNameMapping>app.jar</outputFileNameMapping>
+                                            </dependencySet>
+                                        </dependencySets>
+                                    </inline>
+                                </assembly>
+                                <entryPoint>
+                                    <shell>java -server -ea -XX:+AggressiveOpts -Xms512M -Xmx2G \
+                                        -Djava.security.egd=file:/dev/urandom \
+                                        -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port} \
+                                        -Deureka.instance.hostname=${docker.host.address} \
+                                        -Deureka.instance.nonSecurePort=${sms-producer.server.port} \
+                                        -Dspring.rabbitmq.host=${docker.host.address} \
+                                        -jar \
+                                        /maven/app.jar
+                                    </shell>
+                                </entryPoint>
+                            </build>
+                            <run>
+                                <restartPolicy>
+                                    <name>on-failure</name>
+                                    <retry>5</retry>
+                                </restartPolicy>
+                                <ports>
+                                    <port>${sms-producer.server.port}:${sms-producer.server.port}</port>
+                                </ports>
+                                <dependsOn>
+                                    <dependsOn>%g/configserver:${project.version}</dependsOn>
+                                </dependsOn>
+                                <wait>
+                                    <http>
+                                        <url>http://${docker.host.address}:${sms-producer.server.port}/health</url>
                                         <method>GET</method>
                                         <status>200..399</status>
                                     </http>
