@@ -58,7 +58,7 @@
         <mysql.rootuser.password>root-changeit</mysql.rootuser.password>
         <mysql.port>3306</mysql.port>
         <docker.host.address>192.168.99.100</docker.host.address>
-        <docker.wait.timeout>60000</docker.wait.timeout>
+        <docker.wait.timeout>240000</docker.wait.timeout>
         <sms-producer.server.port>8085</sms-producer.server.port>
         <sms-consumer.server.port>8084</sms-consumer.server.port>
     </properties>
@@ -69,7 +69,14 @@
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>**/test.properties</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/test/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
                 </includes>
             </resource>
         </resources>
