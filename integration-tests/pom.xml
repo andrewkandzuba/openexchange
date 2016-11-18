@@ -55,6 +55,7 @@
         <docker.host.address>192.168.99.100</docker.host.address>
         <docker.wait.timeout>60000</docker.wait.timeout>
         <sms-producer.server.port>8085</sms-producer.server.port>
+        <sms-consumer.server.port>8084</sms-consumer.server.port>
     </properties>
 
     <build>
@@ -296,6 +297,69 @@
                                 <wait>
                                     <http>
                                         <url>http://${docker.host.address}:${sms-producer.server.port}/health</url>
+                                        <method>GET</method>
+                                        <status>200..399</status>
+                                    </http>
+                                    <time>${docker.wait.timeout}</time>
+                                    <kill>1000</kill>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                            </run>
+                        </image>
+                        <image>
+                            <alias>sms-consumer</alias>
+                            <name>%g/sms-consumer:${project.version}</name>
+                            <build>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <from>openjdk:8</from>
+                                <assembly>
+                                    <mode>tgz</mode>
+                                    <permissions>ignore</permissions>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>${project.groupId}:sms-consumer:jar:${project.version}
+                                                    </include>
+                                                </includes>
+                                                <outputFileNameMapping>app.jar</outputFileNameMapping>
+                                            </dependencySet>
+                                        </dependencySets>
+                                    </inline>
+                                </assembly>
+                                <entryPoint>
+                                    <shell>java -server -ea -XX:+AggressiveOpts -Xms512M -Xmx2G \
+                                        -Djava.security.egd=file:/dev/urandom \
+                                        -Dvcap.services.eureka-service.credentials.uri=http://${docker.host.address}:${registry.server.port} \
+                                        -Deureka.instance.hostname=${docker.host.address} \
+                                        -Deureka.instance.nonSecurePort=${sms-consumer.server.port} \
+                                        -Dspring.rabbitmq.host=${docker.host.address} \
+                                        -Dspring.datasource.driver-class-name=com.mysql.jdbc.Driver \
+                                        -Dspring.datasource.url=jdbc:mysql://${docker.host.address}:3306/messaging \
+                                        -Dspring.datasource.username=dev \
+                                        -Dspring.datasource.password=changeit \
+                                        -jar \
+                                        /maven/app.jar
+                                    </shell>
+                                </entryPoint>
+                            </build>
+                            <run>
+                                <restartPolicy>
+                                    <name>on-failure</name>
+                                    <retry>5</retry>
+                                </restartPolicy>
+                                <ports>
+                                    <port>${sms-consumer.server.port}:${sms-consumer.server.port}</port>
+                                </ports>
+                                <dependsOn>
+                                    <dependsOn>%g/configserver:${project.version}</dependsOn>
+                                </dependsOn>
+                                <wait>
+                                    <http>
+                                        <url>http://${docker.host.address}:${sms-consumer.server.port}/health</url>
                                         <method>GET</method>
                                         <status>200..399</status>
                                     </http>
