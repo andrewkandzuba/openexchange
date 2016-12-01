@@ -22,6 +22,10 @@ public class SmsReceiptIntegrationTest {
 
     @Test
     public void smsReceipt() throws Exception {
-        Assert.assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "sms") > 0);
+        int retries = 10;
+        while (--retries > 0) {
+            Assert.assertTrue(JdbcTestUtils.countRowsInTable(jdbcTemplate, "sms") > 0);
+            Thread.sleep(1000);
+        }
     }
 }

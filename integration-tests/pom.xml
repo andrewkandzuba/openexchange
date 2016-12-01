@@ -307,6 +307,8 @@
                                         -Deureka.instance.hostname=${docker.host.address} \
                                         -Deureka.instance.nonSecurePort=${sms-producer.server.port} \
                                         -Dspring.rabbitmq.host=${docker.host.address} \
+                                        -Dspring.producer.concurrency=1 \
+                                        -Dspring.jobs.jobs.restart.timeunit=SECONDS \
                                         -jar \
                                         /maven/app.jar
                                     </shell>
@@ -370,6 +372,8 @@
                                         -Dspring.datasource.url=jdbc:mysql://${docker.host.address}:3306/messaging \
                                         -Dspring.datasource.username=dev \
                                         -Dspring.datasource.password=changeit \
+                                        -Dspring.consumers.concurrency=1 \
+                                        -Dspring.jobs.jobs.restart.timeunit=SECONDS \
                                         -jar \
                                         /maven/app.jar
                                     </shell>
