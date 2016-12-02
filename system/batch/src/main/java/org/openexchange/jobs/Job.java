@@ -7,5 +7,9 @@ import java.lang.annotation.*;
 @Inherited
 @Documented
 public @interface Job {
-    String concurrencyString() default "";
+    String parallelism() default "";
+    String delayInterval() default "0";
+    String delayIntervalTimeUnit() default "SECONDS";
+    String repeatInterval() default "1";
+    String repeatIntervalTimeUnit() default "MINUTES";
 }

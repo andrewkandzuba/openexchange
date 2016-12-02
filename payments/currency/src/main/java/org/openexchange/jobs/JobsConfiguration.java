@@ -32,7 +32,7 @@ public class JobsConfiguration {
         this.currencyRepository = currencyRepository;
     }
 
-    @Job(concurrencyString = "${spring.consumers.concurrency:4}")
+    @Job(parallelism = "${spring.consumers.concurrency:4}")
     public void jobQuotesConsume() {
         while (!Thread.currentThread().isInterrupted()) {
             consume();

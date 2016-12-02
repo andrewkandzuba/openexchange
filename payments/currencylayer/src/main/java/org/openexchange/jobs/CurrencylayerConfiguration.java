@@ -29,7 +29,7 @@ public class CurrencylayerConfiguration {
         this.quoteService = quoteService;
     }
 
-    @Job(concurrencyString = "1")
+    @Job(parallelism = "1")
     public void update(){
         try {
             List<String> currencyCodes = Arrays.asList(currencyLayerService.all().getCurrencies().keySet().stream().toArray(String[]::new));
