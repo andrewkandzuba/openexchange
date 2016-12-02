@@ -16,4 +16,5 @@ env:
   security.user.password: changeit
   eureka.instance.metadataMap.user: user
   eureka.instance.metadataMap.password: changeit
+  eureka.instance.nonSecurePort: 80
   spring.cloud.config.server.monitor.github.enabled: true
