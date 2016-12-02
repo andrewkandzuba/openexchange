@@ -25,7 +25,7 @@ public class JobsConfiguration {
         this.smsService = smsService;
     }
 
-    @Job(parallelism = "${spring.producer.concurrency:4}")
+    @Job(parallelism = "${openexchange.sms.producer.job.parallelism:4}")
     public void jobSmsProducer() {
         Set<Sms> messages = new HashSet<>();
         for (int i = 0; i < smsWriteChunkSize; i++) {

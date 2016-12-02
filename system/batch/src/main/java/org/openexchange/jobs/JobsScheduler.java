@@ -30,12 +30,6 @@ public class JobsScheduler implements EmbeddedValueResolverAware {
 
     private StringValueResolver stringValueResolver;
 
-/*    @Value("${spring.jobs.jobs.restart.interval:1}")
-    private long restartInterval;
-    @Value("${spring.jobs.jobs.restart.timeunit:MINUTES}")
-    private TimeUnit restartTimeUnit;*/
-
-
     @Autowired
     public JobsScheduler(ScheduledExecutorService scheduledExecutorService,
                          ApplicationContext applicationContext) {
@@ -69,17 +63,14 @@ public class JobsScheduler implements EmbeddedValueResolverAware {
             for (Method m : MethodUtils.getMethodsWithAnnotation(o.getClass(), Job.class)) {
                 Job job = m.getAnnotation(Job.class);
 
-                // level of parallelism
                 String parallelismString = resolvePlaceholder(job.parallelism());
                 int parallelism = StringUtils.isEmpty(parallelismString) ? Runtime.getRuntime().availableProcessors() : Integer.valueOf(parallelismString);
 
-                // delay before job's start
                 String delayIntervalString = resolvePlaceholder(job.delayInterval());
                 long delayInterval = StringUtils.isEmpty(delayIntervalString) ? 0 : Long.valueOf(delayIntervalString);
                 String delayIntervalTimeUnitString = resolvePlaceholder(job.delayIntervalTimeUnit());
                 TimeUnit delayIntervalTimeUnit = StringUtils.isEmpty(delayIntervalTimeUnitString) ? TimeUnit.SECONDS : TimeUnit.valueOf(delayIntervalTimeUnitString);
 
-                // repeat schedule
                 String repeatIntervalString = resolvePlaceholder(job.repeatInterval());
                 long repeatInterval = StringUtils.isEmpty(repeatIntervalString) ? 0 : Long.valueOf(repeatIntervalString);
                 String repeatIntervalTimeUnitString = resolvePlaceholder(job.repeatIntervalTimeUnit());

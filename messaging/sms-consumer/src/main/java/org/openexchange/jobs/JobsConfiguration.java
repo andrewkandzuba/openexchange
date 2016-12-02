@@ -28,7 +28,7 @@ public class JobsConfiguration {
         this.smsRepository = smsRepository;
     }
 
-    @Job(parallelism = "${spring.consumers.concurrency:4}")
+    @Job(parallelism = "${openexchange.sms.consumer.job.parallelism:4}")
     public void jobSmsConsumer() {
         while (!Thread.currentThread().isInterrupted()) {
             consume();
